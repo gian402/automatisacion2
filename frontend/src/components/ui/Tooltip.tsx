@@ -1,12 +1,7 @@
-// ============================================================
-// HYTICON — Tooltip
-// ============================================================
-
 import { forwardRef, type ReactNode } from 'react'
 import * as TooltipPrimitive from '@radix-ui/react-tooltip'
 import { cn } from '@/lib/utils'
 
-// Provider global — envolver en App.tsx si se quiere delay global
 const TooltipProvider = TooltipPrimitive.Provider
 const TooltipRoot = TooltipPrimitive.Root
 const TooltipTrigger = TooltipPrimitive.Trigger
@@ -14,14 +9,14 @@ const TooltipTrigger = TooltipPrimitive.Trigger
 const TooltipContent = forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
->(({ className, sideOffset = 4, ...props }, ref) => (
+>(({ className, sideOffset = 5, ...props }, ref) => (
   <TooltipPrimitive.Portal>
     <TooltipPrimitive.Content
       ref={ref}
       sideOffset={sideOffset}
       className={cn(
-        'z-50 max-w-xs rounded-[6px] bg-[#0f172a] px-2.5 py-1.5 text-xs text-white',
-        'shadow-md',
+        'z-50 max-w-xs rounded-md px-2.5 py-1.5 text-xs text-[#c9d1d9] font-medium',
+        'bg-[#1c2333] border border-[rgba(255,255,255,.09)] shadow-[0_8px_24px_rgba(0,0,0,.4)]',
         'data-[state=delayed-open]:animate-in data-[state=closed]:animate-out',
         'data-[state=closed]:fade-out-0 data-[state=delayed-open]:fade-in-0',
         'data-[state=closed]:zoom-out-95 data-[state=delayed-open]:zoom-in-95',
@@ -34,7 +29,6 @@ const TooltipContent = forwardRef<
 ))
 TooltipContent.displayName = TooltipPrimitive.Content.displayName
 
-// ── Componente simplificado para uso rápido ───────────────────
 interface TooltipProps {
   content: string
   children: ReactNode
@@ -42,12 +36,7 @@ interface TooltipProps {
   delayDuration?: number
 }
 
-export function Tooltip({
-  content,
-  children,
-  side = 'top',
-  delayDuration = 300,
-}: TooltipProps) {
+export function Tooltip({ content, children, side = 'top', delayDuration = 300 }: TooltipProps) {
   return (
     <TooltipProvider delayDuration={delayDuration}>
       <TooltipRoot>
@@ -58,9 +47,4 @@ export function Tooltip({
   )
 }
 
-export {
-  TooltipProvider,
-  TooltipRoot,
-  TooltipTrigger,
-  TooltipContent,
-}
+export { TooltipProvider, TooltipRoot, TooltipTrigger, TooltipContent }

@@ -1,8 +1,3 @@
-// ============================================================
-// HYTICON — Alert
-// Mensajes de sistema: info, success, warning, error
-// ============================================================
-
 import type { ReactNode } from 'react'
 import { Info, CheckCircle2, AlertTriangle, XCircle, X } from 'lucide-react'
 import { cva, type VariantProps } from 'class-variance-authority'
@@ -13,15 +8,13 @@ const alertVariants = cva(
   {
     variants: {
       variant: {
-        info:    'border-[#bae6fd] bg-[#f0f9ff] text-[#0369a1]',
-        success: 'border-[#bbf7d0] bg-[#f0fdf4] text-[#15803d]',
-        warning: 'border-[#fde68a] bg-[#fffbeb] text-[#a16207]',
-        error:   'border-[#fecaca] bg-[#fff1f2] text-[#b91c1c]',
+        info:    'border-[rgba(88,166,255,.2)]  bg-[rgba(88,166,255,.08)]  text-[#58a6ff]',
+        success: 'border-[rgba(63,185,80,.2)]   bg-[rgba(63,185,80,.08)]   text-[#3fb950]',
+        warning: 'border-[rgba(210,153,34,.2)]  bg-[rgba(210,153,34,.08)]  text-[#d29922]',
+        error:   'border-[rgba(248,81,73,.2)]   bg-[rgba(248,81,73,.08)]   text-[#f85149]',
       },
     },
-    defaultVariants: {
-      variant: 'info',
-    },
+    defaultVariants: { variant: 'info' },
   },
 )
 
@@ -41,25 +34,20 @@ interface AlertProps extends VariantProps<typeof alertVariants> {
 
 export function Alert({ variant = 'info', title, children, onClose, className }: AlertProps) {
   const Icon = ICONS[variant ?? 'info']
-
   return (
     <div className={cn(alertVariants({ variant }), className)} role="alert">
       <Icon className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
-
       <div className="flex-1 text-sm">
-        {title && <p className="font-medium leading-tight">{title}</p>}
+        {title && <p className="font-semibold leading-tight">{title}</p>}
         {children && (
-          <div className={cn('text-sm opacity-90', title && 'mt-1')}>
-            {children}
-          </div>
+          <div className={cn('text-sm opacity-85', title && 'mt-1')}>{children}</div>
         )}
       </div>
-
       {onClose && (
         <button
           onClick={onClose}
-          aria-label="Cerrar alerta"
-          className="shrink-0 rounded p-0.5 opacity-70 hover:opacity-100 focus:outline-none"
+          aria-label="Cerrar"
+          className="shrink-0 rounded p-0.5 opacity-60 hover:opacity-100 transition-opacity"
         >
           <X className="h-4 w-4" />
         </button>

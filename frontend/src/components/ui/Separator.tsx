@@ -11,7 +11,7 @@ const Separator = forwardRef<
     decorative={decorative}
     orientation={orientation}
     className={cn(
-      'shrink-0 bg-[#e2e8f0]',
+      'shrink-0 bg-[rgba(255,255,255,.07)]',
       orientation === 'horizontal' ? 'h-px w-full' : 'h-full w-px',
       className,
     )}
@@ -20,5 +20,4 @@ const Separator = forwardRef<
 ))
 
 Separator.displayName = SeparatorPrimitive.Root.displayName
-
 export { Separator }

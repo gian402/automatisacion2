@@ -254,7 +254,7 @@ export default function ReportesPage() {
 
       {/* ── Error ────────────────────────────────────────── */}
       {isError && (
-        <div className="flex items-center gap-2 rounded-lg border border-[#fecaca] bg-[#fef2f2] px-4 py-3 text-sm text-[#dc2626]">
+        <div className="flex items-center gap-2 rounded-lg border border-[rgba(248,81,73,.2)] bg-[rgba(248,81,73,.08)] px-4 py-3 text-sm text-[#f85149]">
           <AlertCircle className="h-4 w-4 shrink-0" />
           No se pudieron cargar los datos.{' '}
           <button onClick={() => refetch()} className="underline">Reintentar</button>
@@ -269,40 +269,40 @@ export default function ReportesPage() {
               icon={BarChart3}
               label="Total cotizaciones"
               value={data.resumen.totalCotizaciones}
-              color="bg-[#dbeafe] text-[#1e40af]"
+              color="bg-[rgba(37,99,235,.15)] text-[#58a6ff]"
             />
             <StatCard
               icon={TrendingUp}
               label="Monto total cotizado"
               value={fmt(data.resumen.montoTotal)}
-              color="bg-[#dcfce7] text-[#15803d]"
+              color="bg-[rgba(63,185,80,.12)] text-[#3fb950]"
             />
             <StatCard
               icon={CheckCircle2}
               label="Monto aprobado"
               value={fmt(data.resumen.montoAprobado)}
-              color="bg-[#dcfce7] text-[#15803d]"
+              color="bg-[rgba(63,185,80,.12)] text-[#3fb950]"
             />
             <StatCard
               icon={TrendingUp}
               label="Tasa de conversión"
               value={data.resumen.tasaConversion !== null ? `${data.resumen.tasaConversion}%` : '—'}
               sublabel="Aprobadas / cerradas"
-              color="bg-[#f3e8ff] text-[#6b21a8]"
+              color="bg-[rgba(139,92,246,.12)] text-[#a78bfa]"
             />
           </div>
 
           {/* ── Distribución por estado ───────────────────── */}
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
             <Card>
-              <div className="border-b border-[#f1f5f9] px-4 py-3">
+              <div className="border-b border-[rgba(255,255,255,.06)] px-4 py-3">
                 <h3 className="text-sm font-semibold text-[#c9d1d9]">Distribución por estado</h3>
               </div>
               <CardContent className="p-0">
                 {data.porEstado.length === 0 ? (
                   <p className="py-6 text-center text-sm text-[#484f58]">Sin datos</p>
                 ) : (
-                  <div className="divide-y divide-[#f1f5f9]">
+                  <div className="divide-y divide-[rgba(255,255,255,.06)]">
                     {data.porEstado.map((e) => (
                       <div key={e.estado} className="flex items-center gap-3 px-4 py-3">
                         <div className="w-28 shrink-0">
@@ -315,7 +315,7 @@ export default function ReportesPage() {
                         </span>
                         <div className="flex-1 bg-[rgba(255,255,255,.06)] rounded-full h-1.5">
                           <div
-                            className="h-1.5 rounded-full bg-[#1e3a5f]"
+                            className="h-1.5 rounded-full bg-[#2563eb]"
                             style={{
                               width: data.resumen.totalCotizaciones > 0
                                 ? `${Math.round((e.cantidad / data.resumen.totalCotizaciones) * 100)}%`
@@ -335,21 +335,21 @@ export default function ReportesPage() {
 
             {/* ── Top responsables ──────────────────────── */}
             <Card>
-              <div className="border-b border-[#f1f5f9] px-4 py-3">
+              <div className="border-b border-[rgba(255,255,255,.06)] px-4 py-3">
                 <h3 className="text-sm font-semibold text-[#c9d1d9]">Top responsables</h3>
               </div>
               <CardContent className="p-0">
                 {data.topResponsables.length === 0 ? (
                   <p className="py-6 text-center text-sm text-[#484f58]">Sin datos</p>
                 ) : (
-                  <div className="divide-y divide-[#f1f5f9]">
+                  <div className="divide-y divide-[rgba(255,255,255,.06)]">
                     {data.topResponsables.map((r, i) => (
                       <div key={r.responsableId ?? i} className="flex items-center gap-3 px-4 py-3">
                         <span className="text-xs font-bold text-[#484f58] w-4 shrink-0">
                           {i + 1}
                         </span>
-                        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#dbeafe]">
-                          <Users className="h-3.5 w-3.5 text-[#1e40af]" />
+                        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[rgba(37,99,235,.15)]">
+                          <Users className="h-3.5 w-3.5 text-[#58a6ff]" />
                         </div>
                         <span className="flex-1 text-sm font-medium text-[#c9d1d9] truncate">{r.nombre}</span>
                         <span className="text-xs text-[#484f58] shrink-0">{r.cantidad} cot.</span>
@@ -367,28 +367,28 @@ export default function ReportesPage() {
           {/* ── Evolución mensual ─────────────────────────── */}
           {data.evolucion.length > 0 && (
             <Card>
-              <div className="border-b border-[#f1f5f9] px-4 py-3">
+              <div className="border-b border-[rgba(255,255,255,.06)] px-4 py-3">
                 <h3 className="text-sm font-semibold text-[#c9d1d9]">Evolución mensual</h3>
               </div>
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-[#f1f5f9] bg-[#1c2333]">
+                      <tr className="border-b border-[rgba(255,255,255,.06)] bg-[#1c2333]">
                         <th className="px-4 py-2 text-left text-xs font-semibold text-[#484f58] uppercase tracking-wide">Mes</th>
                         <th className="px-4 py-2 text-center text-xs font-semibold text-[#484f58] uppercase tracking-wide">Cotizaciones</th>
                         <th className="px-4 py-2 text-center text-xs font-semibold text-[#484f58] uppercase tracking-wide">Aprobadas</th>
                         <th className="px-4 py-2 text-right text-xs font-semibold text-[#484f58] uppercase tracking-wide">Monto</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#f8fafc]">
+                    <tbody className="divide-y divide-[rgba(255,255,255,.04)]">
                       {data.evolucion.map((e) => (
                         <tr key={e.mes} className="hover:bg-[#1c2333] transition-colors">
                           <td className="px-4 py-2.5 font-medium text-[#c9d1d9]">{fmtMes(e.mes)}</td>
                           <td className="px-4 py-2.5 text-center text-[#8b949e]">{e.cantidad}</td>
                           <td className="px-4 py-2.5 text-center">
                             {e.aprobadas > 0
-                              ? <span className="text-[#16a34a] font-medium">{e.aprobadas}</span>
+                              ? <span className="text-[#3fb950] font-medium">{e.aprobadas}</span>
                               : <span className="text-[#2d3748]">—</span>}
                           </td>
                           <td className="px-4 py-2.5 text-right font-mono text-sm text-[#c9d1d9]">
@@ -405,7 +405,7 @@ export default function ReportesPage() {
 
           {/* ── Tabla detalle ─────────────────────────────── */}
           <Card>
-            <div className="flex items-center justify-between border-b border-[#f1f5f9] px-4 py-3">
+            <div className="flex items-center justify-between border-b border-[rgba(255,255,255,.06)] px-4 py-3">
               <h3 className="text-sm font-semibold text-[#c9d1d9]">
                 Detalle — {data.cotizaciones.length} cotizaciones
               </h3>

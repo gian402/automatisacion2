@@ -214,7 +214,7 @@ export default function NuevaCotizacionPage() {
               'text-[#484f58]'
             }`}>
               <div className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold ${
-                i < paso  ? 'bg-[#dcfce7] text-[#16a34a]' :
+                i < paso  ? 'bg-[rgba(63,185,80,.12)] text-[#3fb950]' :
                 i === paso ? 'bg-[#2563eb] text-white' :
                 'bg-[rgba(255,255,255,.06)] text-[#484f58]'
               }`}>
@@ -386,7 +386,7 @@ export default function NuevaCotizacionPage() {
                       </td>
                       <td className="px-2 py-3">
                         <Button variant="ghost" size="sm" onClick={() => onEliminarItem(idx)}>
-                          <Trash2 className="h-4 w-4 text-[#dc2626]" />
+                          <Trash2 className="h-4 w-4 text-[#f85149]" />
                         </Button>
                       </td>
                     </tr>
@@ -404,7 +404,7 @@ export default function NuevaCotizacionPage() {
           )}
 
           {itemError && (
-            <p className="text-sm text-[#dc2626]">{itemError}</p>
+            <p className="text-sm text-[#f85149]">{itemError}</p>
           )}
 
           <div className="flex justify-between pt-2">

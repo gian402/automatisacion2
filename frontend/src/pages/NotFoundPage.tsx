@@ -1,7 +1,3 @@
-﻿// ============================================================
-// HYTICON — Página 404
-// ============================================================
-
 import { useNavigate } from 'react-router-dom'
 import { FileQuestion } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
@@ -11,18 +7,45 @@ export default function NotFoundPage() {
   const navigate = useNavigate()
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#1c2333]">
-      <div className="text-center">
-        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[rgba(255,255,255,.06)]">
-          <FileQuestion className="h-8 w-8 text-[#484f58]" />
+    <div style={{
+      display: 'flex',
+      minHeight: '100vh',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: '#0d1117',
+    }}>
+      <div style={{ textAlign: 'center', padding: '24px' }}>
+        {/* Icono */}
+        <div style={{
+          margin: '0 auto 24px',
+          width: '64px', height: '64px',
+          borderRadius: '16px',
+          background: 'rgba(255,255,255,.05)',
+          border: '1px solid rgba(255,255,255,.08)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: '#484f58',
+        }}>
+          <FileQuestion style={{ width: '28px', height: '28px' }} />
         </div>
-        <h1 className="text-4xl font-bold text-[#c9d1d9]">404</h1>
-        <p className="mt-2 text-sm font-medium text-[#c9d1d9]">Página no encontrada</p>
-        <p className="mt-1 text-sm text-[#8b949e]">
+
+        {/* Número */}
+        <p style={{
+          fontSize: '72px', fontWeight: 800,
+          color: 'rgba(255,255,255,.06)',
+          lineHeight: 1, letterSpacing: '-4px',
+          marginBottom: '16px',
+          fontVariantNumeric: 'tabular-nums',
+        }}>404</p>
+
+        <h1 style={{ fontSize: '18px', fontWeight: 700, color: '#f0f6fc', marginBottom: '8px' }}>
+          Página no encontrada
+        </h1>
+        <p style={{ fontSize: '13px', color: '#484f58', marginBottom: '28px' }}>
           La dirección que buscas no existe o fue movida.
         </p>
-        <div className="mt-6 flex justify-center gap-3">
-          <Button variant="outline" size="md" onClick={() => navigate(-1)}>
+
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+          <Button variant="secondary" size="md" onClick={() => navigate(-1)}>
             Volver
           </Button>
           <Button variant="primary" size="md" onClick={() => navigate(ROUTES.DASHBOARD)}>
