@@ -1,0 +1,69 @@
+# ============================================================
+# HYTICON — .gitignore raíz
+# ============================================================
+
+# ── Entornos y secretos ───────────────────────────────────────
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+*.pem
+*.key
+
+# ── Node.js ───────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Builds ───────────────────────────────────────────────────
+dist/
+build/
+out/
+
+# ── Vite ──────────────────────────────────────────────────────
+frontend/dist/
+frontend/.vite/
+
+# ── NestJS ───────────────────────────────────────────────────
+backend/dist/
+
+# ── Prisma ───────────────────────────────────────────────────
+# Mantener schema.prisma pero ignorar migraciones de desarrollo
+# backend/prisma/migrations/   <-- comentado: sí se versiona en producción
+
+# ── Editor y SO ──────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ── Tests y coverage ─────────────────────────────────────────
+coverage/
+*.lcov
+.nyc_output/
+
+# ── Logs ─────────────────────────────────────────────────────
+logs/
+*.log
+
+# ── Caché ────────────────────────────────────────────────────
+.cache/
+.turbo/
+.eslintcache
+*.tsbuildinfo
+
+# ── Puppeteer (Chrome descargado localmente) ──────────────────
+backend/.local-chromium/
+backend/.cache/puppeteer/
+
+# ── Archivos temporales y PDFs generados en desarrollo ────────
+backend/temp/
+backend/pdfs/
+
+# ── Archivos de CI/CD locales ─────────────────────────────────
+*.local

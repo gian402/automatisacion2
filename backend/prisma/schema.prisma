@@ -1,0 +1,258 @@
+// ============================================================
+// HYTICON — Sistema de Cotizaciones
+// Prisma Schema — PostgreSQL
+// Versión 2 — Actualizado con todas las entidades del PROMPT 03
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+
+enum Rol {
+  ADMIN
+  SUPERVISOR
+}
+
+enum Moneda {
+  PEN
+  USD
+}
+
+enum EstadoCotizacion {
+  BORRADOR
+  ENVIADA
+  APROBADA
+  RECHAZADA
+  VENCIDA
+}
+
+enum TipoItem {
+  PRODUCTO
+  MATERIAL
+  SERVICIO
+}
+
+enum CategoriaCatalogo {
+  HARDWARE
+  MATERIALES
+  MANO_OBRA
+  SERVICIOS
+}
+
+// ============================================================
+// TABLA: users
+// Usuarios del sistema (Administrador / Supervisor)
+// Eliminación lógica mediante campo activo
+// ============================================================
+
+model User {
+  id           String   @id @default(uuid())
+  nombre       String
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  rol          Rol      @default(SUPERVISOR)
+  activo       Boolean  @default(true)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  cotizacionesResponsable Cotizacion[]    @relation("Responsable")
+  cotizacionesCreadas     Cotizacion[]    @relation("CreadoPor")
+  refreshTokens           RefreshToken[]
+  historialEstados        HistorialEstado[]
+  auditoria               Auditoria[]
+
+  @@map("users")
+}
+
+// ============================================================
+// TABLA: refresh_tokens
+// Control de sesiones activas para logout seguro
+// Se elimina en cascada al eliminar el usuario
+// ============================================================
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String   @map("user_id")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+// ============================================================
+// TABLA: clientes
+// Datos del cliente que solicita la cotización
+// Eliminación lógica mediante campo activo
+// ============================================================
+
+model Cliente {
+  id        String   @id @default(uuid())
+  nombre    String
+  ruc       String?  @unique
+  direccion String?
+  email     String?
+  telefono  String?
+  activo    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  cotizaciones Cotizacion[]
+
+  @@index([activo])
+  @@index([nombre])
+  @@map("clientes")
+}
+
+// ============================================================
+// TABLA: catalogo_items
+// Productos y servicios del catálogo interno
+// El precio referencial se COPIA al detalle de cotización
+// y nunca se actualiza retroactivamente
+// ============================================================
+
+model CatalogoItem {
+  id                 String            @id @default(uuid())
+  codigo             String            @unique
+  nombre             String
+  descripcion        String?
+  categoria          CategoriaCatalogo
+  unidad             String?           // ej: "und", "m", "hr", "gl"
+  precioReferencial  Decimal?          @map("precio_referencial") @db.Decimal(12, 2)
+  activo             Boolean           @default(true)
+  createdAt          DateTime          @default(now()) @map("created_at")
+  updatedAt          DateTime          @updatedAt @map("updated_at")
+
+  cotizacionItems CotizacionItem[]
+
+  @@index([categoria])
+  @@index([activo])
+  @@map("catalogo_items")
+}
+
+// ============================================================
+// TABLA: cotizaciones
+// Cabecera de cada cotización
+// ============================================================
+
+model Cotizacion {
+  id                  String           @id @default(uuid())
+  numeroCotizacion    String           @unique @map("numero_cotizacion")
+  clienteId           String           @map("cliente_id")
+  proyecto            String?
+  fechaEmision        DateTime         @map("fecha_emision")
+  fechaVencimiento    DateTime         @map("fecha_vencimiento")
+  tipoDocumento       String           @default("COTIZACIÓN") @map("tipo_documento")
+  responsableId       String           @map("responsable_id")
+  moneda              Moneda           @default(PEN)
+  estado              EstadoCotizacion @default(BORRADOR)
+  terminosCondiciones String?          @map("terminos_condiciones")
+
+  // Totales — calculados y almacenados para preservar historial
+  valorVenta Decimal @default(0) @map("valor_venta") @db.Decimal(12, 2)
+  igv        Decimal @default(0) @db.Decimal(12, 2)
+  total      Decimal @default(0) @db.Decimal(12, 2)
+
+  pdfUrl      String?  @map("pdf_url")
+  creadoPorId String   @map("creado_por_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relaciones
+  cliente         Cliente          @relation(fields: [clienteId], references: [id])
+  responsable     User             @relation("Responsable", fields: [responsableId], references: [id])
+  creadoPor       User             @relation("CreadoPor", fields: [creadoPorId], references: [id])
+  items           CotizacionItem[]
+  historialEstados HistorialEstado[]
+
+  @@index([clienteId])
+  @@index([responsableId])
+  @@index([estado])
+  @@index([createdAt])
+  @@index([fechaEmision])
+  @@map("cotizaciones")
+}
+
+// ============================================================
+// TABLA: cotizacion_items
+// Líneas de la cotización — el precio se congela al momento
+// de agregar el ítem, independiente del catálogo
+// ============================================================
+
+model CotizacionItem {
+  id              String    @id @default(uuid())
+  cotizacionId    String    @map("cotizacion_id")
+  catalogoItemId  String?   @map("catalogo_item_id") // nullable: permite ítems libres
+  tipoItem        TipoItem  @map("tipo_item")
+  descripcion     String
+  cantidad        Decimal   @db.Decimal(10, 2)
+  precioUnitario  Decimal   @map("precio_unitario") @db.Decimal(12, 2)
+  subtotal        Decimal   @db.Decimal(12, 2)
+  orden           Int       @default(0)
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  cotizacion   Cotizacion    @relation(fields: [cotizacionId], references: [id], onDelete: Cascade)
+  catalogoItem CatalogoItem? @relation(fields: [catalogoItemId], references: [id])
+
+  @@index([cotizacionId])
+  @@index([catalogoItemId])
+  @@map("cotizacion_items")
+}
+
+// ============================================================
+// TABLA: historial_estados
+// Registro inmutable de cada cambio de estado de una cotización
+// ============================================================
+
+model HistorialEstado {
+  id              String            @id @default(uuid())
+  cotizacionId    String            @map("cotizacion_id")
+  estadoAnterior  EstadoCotizacion? @map("estado_anterior") // null en la creación
+  estadoNuevo     EstadoCotizacion  @map("estado_nuevo")
+  cambiadoPorId   String            @map("cambiado_por_id")
+  nota            String?
+  createdAt       DateTime          @default(now()) @map("created_at")
+
+  cotizacion  Cotizacion @relation(fields: [cotizacionId], references: [id], onDelete: Cascade)
+  cambiadoPor User       @relation(fields: [cambiadoPorId], references: [id])
+
+  @@index([cotizacionId])
+  @@index([cambiadoPorId])
+  @@map("historial_estados")
+}
+
+// ============================================================
+// TABLA: auditoria
+// Registro append-only de acciones relevantes del sistema
+// NUNCA se elimina ni modifica — solo se inserta
+// ============================================================
+
+model Auditoria {
+  id         String   @id @default(uuid())
+  usuarioId  String?  @map("usuario_id") // nullable: acciones del sistema sin usuario
+  accion     String   // ej: "CREAR_COTIZACION", "CAMBIAR_ESTADO", "GENERAR_PDF"
+  entidad    String   // ej: "cotizaciones", "clientes"
+  entidadId  String?  @map("entidad_id")
+  detalle    Json?    // información adicional sin datos sensibles
+  ip         String?
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  usuario User? @relation(fields: [usuarioId], references: [id])
+
+  @@index([usuarioId])
+  @@index([accion])
+  @@index([entidad])
+  @@index([createdAt])
+  @@map("auditoria")
+}
