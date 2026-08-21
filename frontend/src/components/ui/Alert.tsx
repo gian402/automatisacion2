@@ -8,10 +8,26 @@ const alertVariants = cva(
   {
     variants: {
       variant: {
-        info:    'border-[rgba(88,166,255,.2)]  bg-[rgba(88,166,255,.08)]  text-[#58a6ff]',
-        success: 'border-[rgba(63,185,80,.2)]   bg-[rgba(63,185,80,.08)]   text-[#3fb950]',
-        warning: 'border-[rgba(210,153,34,.2)]  bg-[rgba(210,153,34,.08)]  text-[#d29922]',
-        error:   'border-[rgba(248,81,73,.2)]   bg-[rgba(248,81,73,.08)]   text-[#f85149]',
+        info: [
+          'border-[rgba(99,102,241,.25)]',
+          'bg-[rgba(99,102,241,.08)]',
+          'text-[#818cf8]',
+        ].join(' '),
+        success: [
+          'border-[rgba(16,185,129,.25)]',
+          'bg-[rgba(16,185,129,.08)]',
+          'text-[#34d399]',
+        ].join(' '),
+        warning: [
+          'border-[rgba(245,158,11,.25)]',
+          'bg-[rgba(245,158,11,.08)]',
+          'text-[#fbbf24]',
+        ].join(' '),
+        error: [
+          'border-[rgba(239,68,68,.25)]',
+          'bg-[rgba(239,68,68,.08)]',
+          'text-[#f87171]',
+        ].join(' '),
       },
     },
     defaultVariants: { variant: 'info' },
@@ -34,15 +50,22 @@ interface AlertProps extends VariantProps<typeof alertVariants> {
 
 export function Alert({ variant = 'info', title, children, onClose, className }: AlertProps) {
   const Icon = ICONS[variant ?? 'info']
+
   return (
     <div className={cn(alertVariants({ variant }), className)} role="alert">
       <Icon className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+
       <div className="flex-1 text-sm">
-        {title && <p className="font-semibold leading-tight">{title}</p>}
+        {title && (
+          <p className="font-semibold leading-tight">{title}</p>
+        )}
         {children && (
-          <div className={cn('text-sm opacity-85', title && 'mt-1')}>{children}</div>
+          <div className={cn('text-sm opacity-80', title && 'mt-1')}>
+            {children}
+          </div>
         )}
       </div>
+
       {onClose && (
         <button
           onClick={onClose}

@@ -13,7 +13,9 @@ interface FormFieldProps {
   className?: string
 }
 
-export function FormField({ id, label, required, error, hint, children, className }: FormFieldProps) {
+export function FormField({
+  id, label, required, error, hint, children, className,
+}: FormFieldProps) {
   return (
     <div className={cn('flex flex-col gap-1.5', className)}>
       {label && (
@@ -23,7 +25,7 @@ export function FormField({ id, label, required, error, hint, children, classNam
       )}
       {children}
       {hint && !error && (
-        <p className="text-xs text-[#484f58]">{hint}</p>
+        <p className="text-[11px] text-[#4b5563] leading-relaxed">{hint}</p>
       )}
       <ErrorMessage message={error} />
     </div>

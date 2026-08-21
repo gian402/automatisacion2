@@ -9,13 +9,13 @@ const Label = forwardRef<
   <LabelPrimitive.Root
     ref={ref}
     className={cn(
-      'text-xs font-medium text-[#8b949e] leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-50',
+      'text-[12px] font-medium text-[#9ca3af] leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-50',
       className,
     )}
     {...props}
   >
     {children}
-    {required && <span className="ml-1 text-[#f85149]">*</span>}
+    {required && <span className="ml-1 text-[#ef4444]">*</span>}
   </LabelPrimitive.Root>
 ))
 

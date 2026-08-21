@@ -12,13 +12,13 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
       <div className="relative w-full">
         <select
           className={cn(
-            'flex h-[32px] w-full appearance-none rounded-md border px-3 pr-8 text-[13px] text-[#c9d1d9]',
-            'bg-[#0d1117] border-[rgba(255,255,255,.12)]',
-            'focus:outline-none focus:border-[#2563eb] focus:ring-1 focus:ring-[#2563eb]',
+            'flex h-9 w-full appearance-none rounded-md border px-3 pr-8 text-[13px] text-[#e5e7eb]',
+            'bg-[#0a0e1a] border-[rgba(255,255,255,.12)]',
+            'focus:outline-none focus:border-[#6366f1] focus:ring-2 focus:ring-[rgba(99,102,241,.2)]',
             'disabled:cursor-not-allowed disabled:opacity-40',
-            'transition-colors duration-150 cursor-pointer',
+            'transition-[border-color,box-shadow] duration-150 cursor-pointer',
             '[color-scheme:dark]',
-            error && 'border-[rgba(248,81,73,.5)]',
+            error && 'border-[rgba(239,68,68,.5)] focus:border-[#ef4444] focus:ring-[rgba(239,68,68,.2)]',
             className,
           )}
           ref={ref}
@@ -27,8 +27,8 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
           {children}
         </select>
         <ChevronDown
-          className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[#484f58]"
-          style={{ width: '12px', height: '12px' }}
+          className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[#4b5563]"
+          style={{ width: '13px', height: '13px' }}
           aria-hidden
         />
       </div>

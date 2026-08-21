@@ -9,24 +9,55 @@ interface EmptyStateProps {
 
 export function EmptyState({ icon, title, description, action }: EmptyStateProps) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '56px 24px', textAlign: 'center' }}>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '56px 24px',
+      textAlign: 'center',
+    }}>
       {icon && (
         <div style={{
           marginBottom: '16px',
-          width: '44px', height: '44px', borderRadius: '10px',
-          background: 'rgba(255,255,255,.05)',
-          border: '1px solid rgba(255,255,255,.07)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          color: '#484f58',
+          width: '48px',
+          height: '48px',
+          borderRadius: '12px',
+          background: 'rgba(255,255,255,.04)',
+          border: '1px solid rgba(255,255,255,.08)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#4b5563',
         }}>
           {icon}
         </div>
       )}
-      <p style={{ fontSize: '14px', fontWeight: 600, color: '#8b949e' }}>{title}</p>
+
+      <p style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        color: '#9ca3af',
+        margin: 0,
+      }}>
+        {title}
+      </p>
+
       {description && (
-        <p style={{ marginTop: '4px', fontSize: '13px', color: '#484f58' }}>{description}</p>
+        <p style={{
+          marginTop: '4px',
+          fontSize: '13px',
+          color: '#4b5563',
+        }}>
+          {description}
+        </p>
       )}
-      {action && <div style={{ marginTop: '16px' }}>{action}</div>}
+
+      {action && (
+        <div style={{ marginTop: '20px' }}>
+          {action}
+        </div>
+      )}
     </div>
   )
 }

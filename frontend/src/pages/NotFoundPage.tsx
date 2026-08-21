@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { FileQuestion } from 'lucide-react'
+import { FileQuestion, ArrowLeft, Home } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { ROUTES } from '@/router/routes'
 
@@ -12,45 +12,128 @@ export default function NotFoundPage() {
       minHeight: '100vh',
       alignItems: 'center',
       justifyContent: 'center',
-      background: '#0d1117',
+      background: '#0a0e1a',
+      padding: '24px',
     }}>
-      <div style={{ textAlign: 'center', padding: '24px' }}>
-        {/* Icono */}
+      <div style={{
+        textAlign: 'center',
+        animation: 'slideUp .3s ease both',
+        maxWidth: '400px',
+        width: '100%',
+      }}>
+        {/* Decorative 404 */}
         <div style={{
-          margin: '0 auto 24px',
-          width: '64px', height: '64px',
-          borderRadius: '16px',
-          background: 'rgba(255,255,255,.05)',
-          border: '1px solid rgba(255,255,255,.08)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          color: '#484f58',
+          position: 'relative',
+          marginBottom: '8px',
+          userSelect: 'none',
         }}>
-          <FileQuestion style={{ width: '28px', height: '28px' }} />
+          <span style={{
+            fontSize: 'clamp(80px, 20vw, 140px)',
+            fontWeight: 800,
+            color: 'rgba(99,102,241,.08)',
+            lineHeight: 1,
+            letterSpacing: '-6px',
+            fontVariantNumeric: 'tabular-nums',
+            display: 'block',
+          }}>
+            404
+          </span>
+
+          {/* Icon overlay */}
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '56px',
+            height: '56px',
+            borderRadius: '14px',
+            background: 'rgba(99,102,241,.12)',
+            border: '1px solid rgba(99,102,241,.2)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#818cf8',
+            boxShadow: '0 0 20px rgba(99,102,241,.2)',
+          }}>
+            <FileQuestion style={{ width: '24px', height: '24px' }} />
+          </div>
         </div>
 
-        {/* Número */}
-        <p style={{
-          fontSize: '72px', fontWeight: 800,
-          color: 'rgba(255,255,255,.06)',
-          lineHeight: 1, letterSpacing: '-4px',
-          marginBottom: '16px',
-          fontVariantNumeric: 'tabular-nums',
-        }}>404</p>
-
-        <h1 style={{ fontSize: '18px', fontWeight: 700, color: '#f0f6fc', marginBottom: '8px' }}>
+        {/* Title */}
+        <h1 style={{
+          fontSize: '20px',
+          fontWeight: 700,
+          color: '#f9fafb',
+          marginBottom: '8px',
+          letterSpacing: '-.3px',
+        }}>
           Página no encontrada
         </h1>
-        <p style={{ fontSize: '13px', color: '#484f58', marginBottom: '28px' }}>
+
+        {/* Description */}
+        <p style={{
+          fontSize: '14px',
+          color: '#6b7280',
+          lineHeight: 1.6,
+          marginBottom: '32px',
+        }}>
           La dirección que buscas no existe o fue movida.
+          <br />
+          Verifica la URL o regresa al inicio.
         </p>
 
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-          <Button variant="secondary" size="md" onClick={() => navigate(-1)}>
+        {/* Actions */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '10px',
+          flexWrap: 'wrap',
+        }}>
+          <Button
+            variant="outline"
+            size="md"
+            onClick={() => navigate(-1)}
+            style={{ gap: '6px' }}
+          >
+            <ArrowLeft style={{ width: '14px', height: '14px' }} />
             Volver
           </Button>
-          <Button variant="primary" size="md" onClick={() => navigate(ROUTES.DASHBOARD)}>
+          <Button
+            variant="primary"
+            size="md"
+            onClick={() => navigate(ROUTES.DASHBOARD)}
+            style={{ gap: '6px' }}
+          >
+            <Home style={{ width: '14px', height: '14px' }} />
             Ir al inicio
           </Button>
+        </div>
+
+        {/* Subtle branding */}
+        <div style={{
+          marginTop: '48px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px',
+          opacity: 0.35,
+        }}>
+          <div style={{
+            width: '18px',
+            height: '18px',
+            borderRadius: '4px',
+            background: '#6366f1',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '9px',
+            fontWeight: 800,
+            color: '#fff',
+          }}>H</div>
+          <span style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', letterSpacing: '.05em' }}>
+            HYTICON
+          </span>
         </div>
       </div>
     </div>

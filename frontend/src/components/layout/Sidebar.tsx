@@ -1,11 +1,16 @@
-import { NavLink } from 'react-router-dom'
+import { useEffect } from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
 import {
   LayoutDashboard, Users, Package, FileText,
-  BarChart2, ClipboardList, UserCog,
+  BarChart2, ClipboardList, UserCog, X,
 } from 'lucide-react'
-import { cn } from '@/lib/utils'
 import { usePermissions } from '@/hooks/usePermissions'
 import { ROUTES } from '@/router/routes'
+
+interface SidebarProps {
+  isOpen: boolean
+  onClose: () => void
+}
 
 interface NavItem {
   label: string
@@ -26,120 +31,284 @@ const ADMIN_NAV_ITEMS: NavItem[] = [
   { label: 'Usuarios', path: ROUTES.USUARIOS, icon: UserCog },
 ]
 
-export function Sidebar() {
+export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const { isAdmin } = usePermissions()
+  const location = useLocation()
+
+  // Close drawer on route change
+  useEffect(() => {
+    onClose()
+  }, [location.pathname]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Lock body scroll when mobile drawer is open
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768
+    if (isMobile && isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [isOpen])
 
   return (
-    <aside style={{
-      width: '200px',
-      flexShrink: 0,
-      height: '100vh',
-      background: '#0d1117',
-      borderRight: '1px solid rgba(255,255,255,.06)',
-      display: 'flex',
-      flexDirection: 'column',
-    }}>
+    <>
+      <style>{`
+        /* Desktop: sidebar always visible, no overlay */
+        @media (min-width: 768px) {
+          .sidebar-panel {
+            transform: translateX(0) !important;
+            position: fixed !important;
+          }
+          .sidebar-overlay {
+            display: none !important;
+          }
+          .sidebar-close-btn {
+            display: none !important;
+          }
+        }
+      `}</style>
 
-      {/* Logo */}
-      <div style={{
-        height: '52px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '9px',
-        padding: '0 14px',
-        borderBottom: '1px solid rgba(255,255,255,.06)',
-        flexShrink: 0,
-      }}>
+      {/* Mobile overlay backdrop */}
+      <div
+        className="sidebar-overlay"
+        onClick={onClose}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 40,
+          background: 'rgba(0,0,0,.65)',
+          backdropFilter: 'blur(4px)',
+          WebkitBackdropFilter: 'blur(4px)',
+          opacity: isOpen ? 1 : 0,
+          pointerEvents: isOpen ? 'auto' : 'none',
+          transition: 'opacity .25s ease',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Sidebar panel */}
+      <aside
+        className="sidebar-panel"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          zIndex: 50,
+          width: '240px',
+          height: '100vh',
+          background: '#0d1221',
+          borderRight: '1px solid rgba(255,255,255,.07)',
+          display: 'flex',
+          flexDirection: 'column',
+          transform: isOpen ? 'translateX(0)' : 'translateX(-100%)',
+          transition: 'transform .25s cubic-bezier(.4,0,.2,1)',
+        }}
+      >
+        {/* Logo header */}
         <div style={{
-          width: '26px', height: '26px',
-          borderRadius: '6px',
-          background: '#2563eb',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '11px', fontWeight: 800, color: '#fff',
+          height: '52px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          padding: '0 14px 0 16px',
+          borderBottom: '1px solid rgba(255,255,255,.07)',
           flexShrink: 0,
-          boxShadow: '0 0 10px rgba(37,99,235,.35)',
-        }}>H</div>
-        <div>
-          <div style={{ fontSize: '13px', fontWeight: 700, color: '#f0f6fc', letterSpacing: '.02em' }}>
-            HYTICON
+        }}>
+          {/* H icon */}
+          <div style={{
+            width: '28px',
+            height: '28px',
+            borderRadius: '7px',
+            background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '12px',
+            fontWeight: 800,
+            color: '#fff',
+            flexShrink: 0,
+            boxShadow: '0 0 16px rgba(99,102,241,.45)',
+            userSelect: 'none',
+          }}>H</div>
+
+          {/* Brand text */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{
+              fontSize: '13px',
+              fontWeight: 700,
+              color: '#f9fafb',
+              letterSpacing: '.02em',
+            }}>HYTICON</div>
+            <div style={{
+              fontSize: '10px',
+              color: '#374151',
+              marginTop: '1px',
+            }}>TI & Seguridad</div>
           </div>
-          <div style={{ fontSize: '10px', color: '#484f58', marginTop: '1px', letterSpacing: '.01em' }}>
-            TI & Seguridad
-          </div>
+
+          {/* Mobile close button */}
+          <button
+            className="sidebar-close-btn"
+            onClick={onClose}
+            aria-label="Cerrar menú"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '24px',
+              height: '24px',
+              borderRadius: '5px',
+              border: 'none',
+              background: 'transparent',
+              color: '#6b7280',
+              cursor: 'pointer',
+              flexShrink: 0,
+              transition: 'background .15s, color .15s',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,.07)'
+              ;(e.currentTarget as HTMLElement).style.color = '#e5e7eb'
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.background = 'transparent'
+              ;(e.currentTarget as HTMLElement).style.color = '#6b7280'
+            }}
+          >
+            <X style={{ width: '14px', height: '14px' }} />
+          </button>
         </div>
-      </div>
 
-      {/* Nav */}
-      <nav style={{ flex: 1, overflowY: 'auto', padding: '10px 6px' }}>
-        <NavSection label="Principal" items={NAV_ITEMS} />
-        {isAdmin() && (
-          <NavSection label="Administración" items={ADMIN_NAV_ITEMS} />
-        )}
-      </nav>
+        {/* Navigation */}
+        <nav style={{
+          flex: 1,
+          overflowY: 'auto',
+          padding: '12px 8px',
+        }}>
+          <NavSection label="Principal" items={NAV_ITEMS} />
+          {isAdmin() && (
+            <NavSection label="Administración" items={ADMIN_NAV_ITEMS} />
+          )}
+        </nav>
 
-      {/* Footer */}
-      <div style={{
-        padding: '10px 14px',
-        borderTop: '1px solid rgba(255,255,255,.04)',
-        fontSize: '10px',
-        color: '#2d3748',
-        letterSpacing: '.01em',
-      }}>
-        v1.0
-      </div>
-    </aside>
+        {/* Footer */}
+        <div style={{
+          padding: '10px 16px 12px',
+          borderTop: '1px solid rgba(255,255,255,.05)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          flexShrink: 0,
+        }}>
+          <div style={{
+            width: '6px',
+            height: '6px',
+            borderRadius: '50%',
+            background: '#10b981',
+            boxShadow: '0 0 6px rgba(16,185,129,.5)',
+            flexShrink: 0,
+          }} />
+          <span style={{
+            fontSize: '10px',
+            color: '#374151',
+            letterSpacing: '.02em',
+          }}>v1.0 · Sistema activo</span>
+        </div>
+      </aside>
+    </>
   )
 }
 
+/* ── NavSection ────────────────────────────────────────────── */
 function NavSection({ label, items }: { label: string; items: NavItem[] }) {
   return (
-    <div style={{ marginBottom: '18px' }}>
+    <div style={{ marginBottom: '20px' }}>
       <div style={{
         fontSize: '10px',
         fontWeight: 600,
         letterSpacing: '.1em',
         textTransform: 'uppercase',
-        color: '#2d3748',
-        padding: '0 8px',
-        marginBottom: '3px',
-      }}>{label}</div>
-      {items.map(item => <SidebarLink key={item.path} item={item} />)}
+        color: '#374151',
+        padding: '0 10px',
+        marginBottom: '4px',
+      }}>
+        {label}
+      </div>
+      {items.map(item => (
+        <SidebarLink key={item.path} item={item} />
+      ))}
     </div>
   )
 }
 
+/* ── SidebarLink ───────────────────────────────────────────── */
 function SidebarLink({ item }: { item: NavItem }) {
   const Icon = item.icon
+
   return (
     <NavLink
       to={item.path}
       end={item.path === '/'}
-      className={({ isActive }) => cn(
-        'group relative flex items-center gap-2.5 rounded-md px-2.5 py-[7px] text-[13px] transition-all duration-100',
-        isActive
-          ? 'text-[#e6edf3] font-medium bg-[rgba(255,255,255,.06)]'
-          : 'text-[#656d76] hover:bg-[rgba(255,255,255,.04)] hover:text-[#c9d1d9]',
-      )}
+      style={{ textDecoration: 'none', display: 'block' }}
     >
       {({ isActive }) => (
-        <>
-          {/* Barra activa izquierda */}
+        <div
+          style={{
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            borderRadius: '7px',
+            padding: '8px 10px',
+            marginBottom: '1px',
+            background: isActive ? 'rgba(99,102,241,.12)' : 'transparent',
+            cursor: 'pointer',
+            transition: 'background .15s',
+          }}
+          onMouseEnter={e => {
+            if (!isActive) {
+              (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,.04)'
+            }
+          }}
+          onMouseLeave={e => {
+            if (!isActive) {
+              (e.currentTarget as HTMLElement).style.background = 'transparent'
+            }
+          }}
+        >
+          {/* Active indicator bar */}
           {isActive && (
             <span style={{
               position: 'absolute',
-              left: 0, top: '20%', bottom: '20%',
-              width: '2px',
-              borderRadius: '0 2px 2px 0',
-              background: '#2563eb',
+              left: 0,
+              top: '18%',
+              bottom: '18%',
+              width: '2.5px',
+              borderRadius: '0 3px 3px 0',
+              background: '#6366f1',
+              boxShadow: '0 0 8px rgba(99,102,241,.6)',
             }} />
           )}
+
+          {/* Icon */}
           <Icon style={{
-            width: '14px', height: '14px', flexShrink: 0,
-            color: isActive ? '#58a6ff' : 'currentColor',
-            transition: 'color .1s',
+            width: '15px',
+            height: '15px',
+            flexShrink: 0,
+            color: isActive ? '#818cf8' : '#6b7280',
+            transition: 'color .15s',
           }} />
-          <span>{item.label}</span>
-        </>
+
+          {/* Label */}
+          <span style={{
+            fontSize: '13px',
+            fontWeight: isActive ? 600 : 400,
+            color: isActive ? '#f9fafb' : '#6b7280',
+            transition: 'color .15s',
+          }}>
+            {item.label}
+          </span>
+        </div>
       )}
     </NavLink>
   )

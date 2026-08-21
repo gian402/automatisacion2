@@ -11,7 +11,7 @@ const Separator = forwardRef<
     decorative={decorative}
     orientation={orientation}
     className={cn(
-      'shrink-0 bg-[rgba(255,255,255,.07)]',
+      'shrink-0 bg-[rgba(255,255,255,.08)]',
       orientation === 'horizontal' ? 'h-px w-full' : 'h-full w-px',
       className,
     )}
