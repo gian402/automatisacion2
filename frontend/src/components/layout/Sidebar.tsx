@@ -31,7 +31,7 @@ export function Sidebar() {
 
   return (
     <aside style={{
-      width: '220px',
+      width: '200px',
       flexShrink: 0,
       height: '100vh',
       background: '#0d1117',
@@ -39,37 +39,38 @@ export function Sidebar() {
       display: 'flex',
       flexDirection: 'column',
     }}>
+
       {/* Logo */}
       <div style={{
-        height: '56px',
+        height: '52px',
         display: 'flex',
         alignItems: 'center',
-        gap: '10px',
-        padding: '0 16px',
+        gap: '9px',
+        padding: '0 14px',
         borderBottom: '1px solid rgba(255,255,255,.06)',
         flexShrink: 0,
       }}>
         <div style={{
-          width: '28px', height: '28px',
-          borderRadius: '7px',
+          width: '26px', height: '26px',
+          borderRadius: '6px',
           background: '#2563eb',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '12px', fontWeight: 800, color: '#fff',
-          boxShadow: '0 0 12px rgba(37,99,235,.4)',
+          fontSize: '11px', fontWeight: 800, color: '#fff',
           flexShrink: 0,
+          boxShadow: '0 0 10px rgba(37,99,235,.35)',
         }}>H</div>
         <div>
-          <div style={{ fontSize: '13px', fontWeight: 700, color: '#f0f6fc', letterSpacing: '.04em' }}>
+          <div style={{ fontSize: '13px', fontWeight: 700, color: '#f0f6fc', letterSpacing: '.02em' }}>
             HYTICON
           </div>
-          <div style={{ fontSize: '10px', color: '#484f58', marginTop: '1px' }}>
-            TI & Seguridad Electrónica
+          <div style={{ fontSize: '10px', color: '#484f58', marginTop: '1px', letterSpacing: '.01em' }}>
+            TI & Seguridad
           </div>
         </div>
       </div>
 
       {/* Nav */}
-      <nav style={{ flex: 1, overflowY: 'auto', padding: '12px 8px' }}>
+      <nav style={{ flex: 1, overflowY: 'auto', padding: '10px 6px' }}>
         <NavSection label="Principal" items={NAV_ITEMS} />
         {isAdmin() && (
           <NavSection label="Administración" items={ADMIN_NAV_ITEMS} />
@@ -78,12 +79,13 @@ export function Sidebar() {
 
       {/* Footer */}
       <div style={{
-        padding: '12px 16px',
-        borderTop: '1px solid rgba(255,255,255,.06)',
-        fontSize: '11px',
+        padding: '10px 14px',
+        borderTop: '1px solid rgba(255,255,255,.04)',
+        fontSize: '10px',
         color: '#2d3748',
+        letterSpacing: '.01em',
       }}>
-        Sistema de Cotizaciones v1.0
+        v1.0
       </div>
     </aside>
   )
@@ -91,15 +93,15 @@ export function Sidebar() {
 
 function NavSection({ label, items }: { label: string; items: NavItem[] }) {
   return (
-    <div style={{ marginBottom: '20px' }}>
+    <div style={{ marginBottom: '18px' }}>
       <div style={{
         fontSize: '10px',
         fontWeight: 600,
-        letterSpacing: '.08em',
+        letterSpacing: '.1em',
         textTransform: 'uppercase',
-        color: '#484f58',
+        color: '#2d3748',
         padding: '0 8px',
-        marginBottom: '4px',
+        marginBottom: '3px',
       }}>{label}</div>
       {items.map(item => <SidebarLink key={item.path} item={item} />)}
     </div>
@@ -113,28 +115,30 @@ function SidebarLink({ item }: { item: NavItem }) {
       to={item.path}
       end={item.path === '/'}
       className={({ isActive }) => cn(
-        'group flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-all duration-100',
+        'group relative flex items-center gap-2.5 rounded-md px-2.5 py-[7px] text-[13px] transition-all duration-100',
         isActive
-          ? 'bg-[rgba(37,99,235,.15)] text-[#58a6ff] font-medium'
-          : 'text-[#8b949e] hover:bg-[rgba(255,255,255,.05)] hover:text-[#c9d1d9]',
+          ? 'text-[#e6edf3] font-medium bg-[rgba(255,255,255,.06)]'
+          : 'text-[#656d76] hover:bg-[rgba(255,255,255,.04)] hover:text-[#c9d1d9]',
       )}
     >
       {({ isActive }) => (
         <>
-          <Icon className={cn(
-            'h-[15px] w-[15px] shrink-0 transition-colors',
-            isActive ? 'text-[#58a6ff]' : 'text-[#484f58] group-hover:text-[#8b949e]'
-          )} />
-          <span style={{ fontSize: '13px' }}>{item.label}</span>
+          {/* Barra activa izquierda */}
           {isActive && (
             <span style={{
-              marginLeft: 'auto',
-              width: '4px', height: '4px',
-              borderRadius: '50%',
+              position: 'absolute',
+              left: 0, top: '20%', bottom: '20%',
+              width: '2px',
+              borderRadius: '0 2px 2px 0',
               background: '#2563eb',
-              boxShadow: '0 0 6px rgba(37,99,235,.8)',
             }} />
           )}
+          <Icon style={{
+            width: '14px', height: '14px', flexShrink: 0,
+            color: isActive ? '#58a6ff' : 'currentColor',
+            transition: 'color .1s',
+          }} />
+          <span>{item.label}</span>
         </>
       )}
     </NavLink>

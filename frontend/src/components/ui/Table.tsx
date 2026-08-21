@@ -1,5 +1,5 @@
 import React, { type ReactNode } from 'react'
-import { ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react'
+import { ArrowUp, ArrowDown, ChevronsUpDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { TableSkeleton } from '@/components/common/Skeleton'
 import { EmptyState } from '@/components/common/EmptyState'
@@ -45,16 +45,20 @@ export function Table<T>({
   emptyAction, emptyIcon, sortState, onSort, onRowClick, className,
 }: TableProps<T>) {
   return (
-    <div className={cn('w-full overflow-hidden rounded-lg border border-[rgba(255,255,255,.07)] bg-[#161b27]', className)}>
+    <div className={cn('w-full overflow-hidden rounded-lg border border-[rgba(255,255,255,.07)]', className)}
+      style={{ background: '#111827' }}>
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse text-sm">
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+          {/* Header */}
           <thead>
-            <tr className="border-b border-[rgba(255,255,255,.06)]">
+            <tr style={{ borderBottom: '1px solid rgba(255,255,255,.07)' }}>
               {columns.map(col => (
                 <TableHeaderCell key={col.key} column={col} sortState={sortState} onSort={onSort} />
               ))}
             </tr>
           </thead>
+
+          {/* Body */}
           <tbody>
             {isLoading ? (
               <TableSkeleton rows={5} cols={columns.length} />
@@ -66,21 +70,20 @@ export function Table<T>({
               data.map(row => (
                 <tr
                   key={keyExtractor(row)}
-                  className={cn(
-                    'border-b border-[rgba(255,255,255,.04)] last:border-0 transition-colors duration-75',
-                    onRowClick ? 'cursor-pointer hover:bg-[#1c2333]' : 'hover:bg-[rgba(255,255,255,.02)]',
-                  )}
+                  style={{ borderBottom: '1px solid rgba(255,255,255,.05)', transition: 'background .1s', cursor: onRowClick ? 'pointer' : undefined }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,.03)' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent' }}
                   onClick={() => onRowClick?.(row)}
                 >
                   {columns.map(col => (
                     <td
                       key={col.key}
-                      className={cn(
-                        'px-4 py-3 text-[#c9d1d9]',
-                        col.align === 'center' && 'text-center',
-                        col.align === 'right' && 'text-right',
-                      )}
-                      style={col.width ? { width: col.width } : undefined}
+                      style={{
+                        padding: '13px 16px',
+                        color: '#c9d1d9',
+                        textAlign: col.align === 'center' ? 'center' : col.align === 'right' ? 'right' : 'left',
+                        ...(col.width ? { width: col.width } : {}),
+                      }}
                     >
                       {col.render
                         ? col.render(row)
@@ -105,16 +108,22 @@ function TableHeaderCell<T>({
 
   return (
     <th
-      className={cn(
-        'px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-[#484f58]',
-        column.align === 'center' && 'text-center',
-        column.align === 'right' && 'text-right',
-        column.sortable && onSort && 'cursor-pointer select-none hover:text-[#8b949e]',
-      )}
-      style={column.width ? { width: column.width } : undefined}
+      style={{
+        padding: '10px 16px',
+        textAlign: column.align === 'center' ? 'center' : column.align === 'right' ? 'right' : 'left',
+        fontSize: '11px',
+        fontWeight: 600,
+        textTransform: 'uppercase',
+        letterSpacing: '.07em',
+        color: '#484f58',
+        background: 'rgba(255,255,255,.02)',
+        cursor: column.sortable && onSort ? 'pointer' : undefined,
+        userSelect: 'none',
+        ...(column.width ? { width: column.width } : {}),
+      }}
       onClick={() => column.sortable && onSort?.(column.key)}
     >
-      <span className="inline-flex items-center gap-1">
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
         {column.header}
         {column.sortable && onSort && <SortIcon direction={direction} />}
       </span>
@@ -123,9 +132,9 @@ function TableHeaderCell<T>({
 }
 
 function SortIcon({ direction }: { direction: SortDirection }) {
-  if (direction === 'asc')  return <ArrowUp className="h-3 w-3 text-[#2563eb]" />
-  if (direction === 'desc') return <ArrowDown className="h-3 w-3 text-[#2563eb]" />
-  return <ArrowUpDown className="h-3 w-3 text-[#2d3748]" />
+  if (direction === 'asc')  return <ArrowUp style={{ width: '11px', height: '11px', color: '#2563eb' }} />
+  if (direction === 'desc') return <ArrowDown style={{ width: '11px', height: '11px', color: '#2563eb' }} />
+  return <ChevronsUpDown style={{ width: '11px', height: '11px', color: '#2d3748' }} />
 }
 
 export function useSortState(defaultKey: string | null = null) {
@@ -158,12 +167,19 @@ export function TablePagination({ page, totalPages, total, limit, onPageChange }
   const to = Math.min(page * limit, total)
 
   return (
-    <div className="flex items-center justify-between border-t border-[rgba(255,255,255,.06)] bg-[#161b27] px-4 py-3">
-      <p className="text-xs text-[#484f58]">
-        Mostrando <span className="text-[#8b949e] font-medium">{from}–{to}</span> de{' '}
-        <span className="text-[#8b949e] font-medium">{total}</span>
+    <div style={{
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      borderTop: '1px solid rgba(255,255,255,.06)',
+      background: '#111827',
+      padding: '10px 16px',
+      borderRadius: '0 0 8px 8px',
+    }}>
+      <p style={{ fontSize: '12px', color: '#484f58' }}>
+        <span style={{ color: '#8b949e', fontWeight: 500 }}>{from}–{to}</span>
+        {' '}de{' '}
+        <span style={{ color: '#8b949e', fontWeight: 500 }}>{total}</span>
       </p>
-      <div className="flex items-center gap-1">
+      <div style={{ display: 'flex', gap: '4px' }}>
         <PaginationButton onClick={() => onPageChange(page - 1)} disabled={page <= 1} label="Anterior">‹</PaginationButton>
         {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
           const p = i + 1
@@ -183,13 +199,19 @@ function PaginationButton({ children, onClick, disabled, active, label }: {
       onClick={onClick}
       disabled={disabled}
       aria-label={label}
-      className={cn(
-        'flex h-6 min-w-6 items-center justify-center rounded px-2 text-xs transition-colors',
-        'disabled:cursor-not-allowed disabled:opacity-30',
-        active
-          ? 'bg-[#2563eb] text-white font-medium'
-          : 'text-[#8b949e] hover:bg-[rgba(255,255,255,.07)] hover:text-[#c9d1d9]',
-      )}
+      style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        height: '26px', minWidth: '26px', padding: '0 6px',
+        borderRadius: '5px', fontSize: '12px', border: 'none',
+        background: active ? '#2563eb' : 'transparent',
+        color: active ? '#fff' : '#8b949e',
+        fontWeight: active ? 600 : 400,
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.3 : 1,
+        transition: 'background .1s',
+      }}
+      onMouseEnter={e => { if (!active && !disabled) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,.07)' }}
+      onMouseLeave={e => { if (!active) (e.currentTarget as HTMLElement).style.background = 'transparent' }}
     >
       {children}
     </button>

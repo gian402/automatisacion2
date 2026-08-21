@@ -4,21 +4,27 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563eb] focus-visible:ring-offset-1 focus-visible:ring-offset-[#0d1117] disabled:pointer-events-none disabled:opacity-40',
+  'inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-md font-medium transition-all duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563eb] focus-visible:ring-offset-1 focus-visible:ring-offset-[#0d1117] disabled:pointer-events-none disabled:opacity-40 select-none',
   {
     variants: {
       variant: {
-        primary:   'bg-[#2563eb] text-white hover:bg-[#1d4ed8] active:bg-[#1e40af] shadow-[0_4px_16px_rgba(37,99,235,.3)]',
-        secondary: 'bg-[rgba(255,255,255,.06)] text-[#c9d1d9] border border-[rgba(255,255,255,.08)] hover:bg-[rgba(255,255,255,.1)] hover:border-[rgba(255,255,255,.14)]',
-        outline:   'border border-[rgba(255,255,255,.08)] bg-transparent text-[#8b949e] hover:bg-[rgba(255,255,255,.05)] hover:text-[#c9d1d9]',
-        ghost:     'text-[#8b949e] hover:bg-[rgba(255,255,255,.05)] hover:text-[#c9d1d9]',
-        danger:    'bg-[rgba(248,81,73,.15)] text-[#f85149] border border-[rgba(248,81,73,.2)] hover:bg-[rgba(248,81,73,.25)]',
-        link:      'text-[#58a6ff] underline-offset-4 hover:underline',
+        primary:
+          'bg-[#2563eb] text-white text-[13px] hover:bg-[#1d4ed8] active:scale-[.98] shadow-[0_1px_0_rgba(0,0,0,.3),inset_0_1px_0_rgba(255,255,255,.08)]',
+        secondary:
+          'bg-[rgba(255,255,255,.06)] text-[#c9d1d9] text-[13px] border border-[rgba(255,255,255,.1)] hover:bg-[rgba(255,255,255,.1)] hover:border-[rgba(255,255,255,.16)] active:scale-[.98]',
+        outline:
+          'border border-[rgba(255,255,255,.1)] bg-transparent text-[#8b949e] text-[13px] hover:bg-[rgba(255,255,255,.06)] hover:text-[#c9d1d9] active:scale-[.98]',
+        ghost:
+          'text-[#656d76] text-[13px] hover:bg-[rgba(255,255,255,.06)] hover:text-[#c9d1d9]',
+        danger:
+          'bg-[rgba(248,81,73,.12)] text-[#f85149] text-[13px] border border-[rgba(248,81,73,.2)] hover:bg-[rgba(248,81,73,.2)] active:scale-[.98]',
+        link:
+          'text-[#58a6ff] text-[13px] underline-offset-4 hover:underline',
       },
       size: {
-        sm:   'h-7 px-3 text-xs rounded',
-        md:   'h-8 px-4',
-        lg:   'h-9 px-5',
+        sm:   'h-7 px-3 text-[12px] rounded',
+        md:   'h-[32px] px-3.5',
+        lg:   'h-9 px-5 text-sm',
         icon: 'h-8 w-8',
       },
     },
@@ -43,9 +49,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled || loading}
         {...props}
       >
-        {loading ? (
-          <><span className="h-3.5 w-3.5 rounded-full border-2 border-current border-t-transparent animate-spin" />{children}</>
-        ) : children}
+        {loading
+          ? <><span className="h-3.5 w-3.5 rounded-full border-2 border-current border-t-transparent animate-spin" />{children}</>
+          : children}
       </Comp>
     )
   },

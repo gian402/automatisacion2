@@ -26,7 +26,7 @@ export function MainLayout() {
         <main style={{
           flex: 1,
           overflowY: 'auto',
-          padding: '28px 32px',
+          padding: '32px 36px',
           background: '#0d1117',
         }}>
           <Outlet />

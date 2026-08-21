@@ -10,17 +10,33 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, description, actions, className }: PageHeaderProps) {
   return (
-    <div className={cn('flex items-start justify-between gap-4 mb-6', className)}>
-      <div>
-        <h1 style={{ fontSize: '18px', fontWeight: 700, color: '#f0f6fc', letterSpacing: '-.3px', lineHeight: 1.2 }}>
+    <div className={cn('flex items-center justify-between gap-4 mb-7', className)}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+        <h1 style={{
+          fontSize: '20px',
+          fontWeight: 700,
+          color: '#f0f6fc',
+          letterSpacing: '-.4px',
+          lineHeight: 1.15,
+          margin: 0,
+        }}>
           {title}
         </h1>
         {description && (
-          <p style={{ marginTop: '4px', fontSize: '13px', color: '#484f58' }}>{description}</p>
+          <p style={{
+            margin: 0,
+            fontSize: '13px',
+            color: '#484f58',
+            fontWeight: 400,
+          }}>
+            {description}
+          </p>
         )}
       </div>
       {actions && (
-        <div className="flex shrink-0 items-center gap-2">{actions}</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+          {actions}
+        </div>
       )}
     </div>
   )

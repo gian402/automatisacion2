@@ -2,55 +2,34 @@
 @import "tailwindcss";
 
 /* ============================================================
-   HYTICON — Design System
-   Dark premium · Inspirado en Linear / Vercel / Stripe
+   HYTICON — Design System  ·  Dark premium
+   Inspirado en Netlify / Linear / GitHub
    ============================================================ */
 
 @theme {
-  /* ── Marca ─────────────────────────────────────────────── */
-  --color-brand-400: #60a5fa;
   --color-brand-500: #3b82f6;
   --color-brand-600: #2563eb;
   --color-brand-700: #1d4ed8;
 
-  /* ── Fondo / superficies ───────────────────────────────── */
-  --color-bg:          #0d1117;
-  --color-surface-1:   #161b27;
-  --color-surface-2:   #1c2333;
-  --color-surface-3:   #212d40;
-  --color-border:      rgba(255,255,255,.07);
-  --color-border-soft: rgba(255,255,255,.04);
+  /* Fondos */
+  --color-bg:        #0d1117;   /* página principal */
+  --color-surface-1: #111827;   /* cards, tablas */
+  --color-surface-2: #161b27;   /* hover rows, sub-paneles */
+  --color-border:    rgba(255,255,255,.08);
 
-  /* ── Texto ─────────────────────────────────────────────── */
-  --color-text-1: #f0f6fc;
+  /* Texto */
+  --color-text-1: #e6edf3;
   --color-text-2: #8b949e;
   --color-text-3: #484f58;
 
-  /* ── Semánticos ────────────────────────────────────────── */
-  --color-success:     #3fb950;
-  --color-success-bg:  rgba(63,185,80,.1);
-  --color-warning:     #d29922;
-  --color-warning-bg:  rgba(210,153,34,.1);
-  --color-danger:      #f85149;
-  --color-danger-bg:   rgba(248,81,73,.1);
-  --color-info:        #58a6ff;
-  --color-info-bg:     rgba(88,166,255,.1);
+  /* Semánticos */
+  --color-success: #3fb950;
+  --color-warning: #d29922;
+  --color-danger:  #f85149;
+  --color-info:    #58a6ff;
 
-  /* ── Tipografía ─────────────────────────────────────────── */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-
-  /* ── Radios ─────────────────────────────────────────────── */
-  --radius-sm:  4px;
-  --radius-md:  6px;
-  --radius-lg:  8px;
-  --radius-xl:  12px;
-
-  /* ── Sombras ────────────────────────────────────────────── */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,.4);
-  --shadow-md: 0 4px 12px rgba(0,0,0,.4);
-  --shadow-lg: 0 8px 24px rgba(0,0,0,.5);
-  --shadow-brand: 0 4px 16px rgba(37,99,235,.3);
 }
 
 /* ── Reset ─────────────────────────────────────────────────── */
@@ -73,8 +52,8 @@ body {
 
 input, textarea, select, button { font-family: inherit; font-size: inherit; }
 button { cursor: pointer; }
-a { color: var(--color-brand-400); text-decoration: none; }
-a:hover { color: var(--color-brand-500); }
+a { color: #58a6ff; text-decoration: none; }
+a:hover { color: #79c0ff; }
 
 /* ── Scrollbar ──────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
@@ -83,7 +62,7 @@ a:hover { color: var(--color-brand-500); }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.18); }
 
 /* ── Focus ──────────────────────────────────────────────────── */
-:focus-visible { outline: 2px solid var(--color-brand-500); outline-offset: 2px; }
+:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }
 
 /* ── Animaciones ────────────────────────────────────────────── */
 @keyframes fadeIn   { from { opacity: 0; } to { opacity: 1; } }
@@ -109,27 +88,23 @@ a:hover { color: var(--color-brand-500); }
   animation: spin .6s linear infinite;
 }
 
-/* ── Surface util ───────────────────────────────────────────── */
-.surface-card {
-  background: var(--color-surface-1);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-}
-
 /* ── Modal overlay ──────────────────────────────────────────── */
 .modal-overlay {
-  background: rgba(0,0,0,.6);
+  background: rgba(0,0,0,.65);
   backdrop-filter: blur(4px);
 }
 
 /* ── Clases tipográficas ────────────────────────────────────── */
-.text-page-title    { font-size: 18px; font-weight: 700; color: var(--color-text-1); letter-spacing: -.3px; }
-.text-section-title { font-size: 14px; font-weight: 600; color: var(--color-text-1); }
-.text-label         { font-size: 13px; font-weight: 500; color: var(--color-text-2); }
-.text-caption       { font-size: 12px; color: var(--color-text-3); }
+.text-page-title    { font-size: 20px; font-weight: 700; color: #e6edf3; letter-spacing: -.4px; }
+.text-section-title { font-size: 14px; font-weight: 600; color: #e6edf3; }
+.text-label         { font-size: 12px; font-weight: 500; color: #8b949e; }
+.text-caption       { font-size: 11px; color: #484f58; }
 .text-mono          { font-family: var(--font-mono); font-size: 12px; }
-.amount             { font-family: var(--font-mono); font-size: 13px; font-weight: 500; color: var(--color-text-1); }
-.cotizacion-number  { font-family: var(--font-mono); font-size: 12px; color: var(--color-text-2); }
+.amount             { font-family: var(--font-mono); font-size: 13px; font-weight: 500; color: #c9d1d9; }
+.cotizacion-number  { font-family: var(--font-mono); font-size: 12px; color: #58a6ff; }
 
-/* ── Table util ─────────────────────────────────────────────── */
-.table-row-hover:hover { background: var(--color-surface-2); }
+/* ── Inputs date dark fix ───────────────────────────────────── */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.6);
+  cursor: pointer;
+}

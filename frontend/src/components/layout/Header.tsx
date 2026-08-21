@@ -1,4 +1,4 @@
-import { LogOut, ChevronDown } from 'lucide-react'
+import { LogOut, ChevronDown, Bell } from 'lucide-react'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { useAuth } from '@/hooks/useAuth'
 
@@ -6,29 +6,21 @@ interface HeaderProps {
   title?: string
 }
 
-export function Header({ title }: HeaderProps) {
+export function Header({ title: _title }: HeaderProps) {
   const { user, logout } = useAuth()
 
   return (
     <header style={{
-      height: '56px',
+      height: '52px',
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'space-between',
-      padding: '0 32px',
+      justifyContent: 'flex-end',
+      padding: '0 24px',
       background: '#0d1117',
       borderBottom: '1px solid rgba(255,255,255,.06)',
       flexShrink: 0,
+      gap: '8px',
     }}>
-      {/* Título */}
-      <span style={{
-        fontSize: '14px',
-        fontWeight: 600,
-        color: '#f0f6fc',
-        letterSpacing: '-.1px',
-      }}>
-        {title}
-      </span>
 
       {/* Usuario */}
       {user && (
@@ -36,37 +28,37 @@ export function Header({ title }: HeaderProps) {
           <DropdownMenu.Trigger asChild>
             <button style={{
               display: 'flex', alignItems: 'center', gap: '8px',
-              padding: '5px 10px 5px 5px',
+              padding: '4px 8px 4px 4px',
               borderRadius: '8px',
               border: '1px solid rgba(255,255,255,.07)',
               background: 'transparent',
               cursor: 'pointer',
               transition: 'background .15s',
+              outline: 'none',
             }}
             onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,.05)')}
             onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
             >
-              {/* Avatar */}
               <div style={{
-                width: '28px', height: '28px',
-                borderRadius: '7px',
-                background: 'rgba(37,99,235,.2)',
-                border: '1px solid rgba(37,99,235,.3)',
+                width: '26px', height: '26px',
+                borderRadius: '6px',
+                background: 'rgba(37,99,235,.25)',
+                border: '1px solid rgba(37,99,235,.35)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '12px', fontWeight: 700, color: '#58a6ff',
+                fontSize: '11px', fontWeight: 700, color: '#58a6ff',
                 flexShrink: 0,
               }}>
                 {user.nombre.charAt(0).toUpperCase()}
               </div>
               <div style={{ textAlign: 'left', lineHeight: 1 }}>
-                <div style={{ fontSize: '12px', fontWeight: 600, color: '#c9d1d9' }}>
-                  {user.nombre.split(' ')[0]}
+                <div style={{ fontSize: '12px', fontWeight: 600, color: '#c9d1d9', whiteSpace: 'nowrap' }}>
+                  {user.nombre.split(' ').slice(0, 2).join(' ')}
                 </div>
-                <div style={{ fontSize: '10px', color: '#484f58', marginTop: '2px' }}>
+                <div style={{ fontSize: '10px', color: '#484f58', marginTop: '2px', whiteSpace: 'nowrap' }}>
                   {user.rol === 'ADMIN' ? 'Administrador' : 'Supervisor'}
                 </div>
               </div>
-              <ChevronDown style={{ width: '12px', height: '12px', color: '#484f58', marginLeft: '2px' }} />
+              <ChevronDown style={{ width: '11px', height: '11px', color: '#484f58' }} />
             </button>
           </DropdownMenu.Trigger>
 
@@ -75,18 +67,17 @@ export function Header({ title }: HeaderProps) {
               align="end"
               sideOffset={6}
               style={{
-                minWidth: '200px',
+                minWidth: '210px',
                 background: '#161b27',
-                border: '1px solid rgba(255,255,255,.08)',
+                border: '1px solid rgba(255,255,255,.09)',
                 borderRadius: '10px',
-                boxShadow: '0 8px 24px rgba(0,0,0,.5)',
+                boxShadow: '0 16px 40px rgba(0,0,0,.6)',
                 padding: '4px',
                 zIndex: 50,
               }}
             >
-              {/* Info */}
               <div style={{
-                padding: '10px 12px 8px',
+                padding: '10px 12px 9px',
                 borderBottom: '1px solid rgba(255,255,255,.06)',
                 marginBottom: '4px',
               }}>
@@ -98,12 +89,11 @@ export function Header({ title }: HeaderProps) {
                 onSelect={logout}
                 style={{
                   display: 'flex', alignItems: 'center', gap: '8px',
-                  padding: '7px 12px',
+                  padding: '7px 10px',
                   fontSize: '13px', color: '#f85149',
                   borderRadius: '6px',
                   cursor: 'pointer',
                   outline: 'none',
-                  transition: 'background .1s',
                 }}
                 onMouseEnter={e => ((e.currentTarget as HTMLElement).style.background = 'rgba(248,81,73,.1)')}
                 onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background = 'transparent')}
