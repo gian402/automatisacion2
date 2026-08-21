@@ -1,8 +1,3 @@
-// ============================================================
-// HYTICON — EmptyState
-// Pantalla de estado vacío para tablas y listas
-// ============================================================
-
 import type { ReactNode } from 'react'
 
 interface EmptyStateProps {
@@ -14,17 +9,24 @@ interface EmptyStateProps {
 
 export function EmptyState({ icon, title, description, action }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center py-16 text-center">
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '56px 24px', textAlign: 'center' }}>
       {icon && (
-        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#f1f5f9] text-[#94a3b8]">
+        <div style={{
+          marginBottom: '16px',
+          width: '44px', height: '44px', borderRadius: '10px',
+          background: 'rgba(255,255,255,.05)',
+          border: '1px solid rgba(255,255,255,.07)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: '#484f58',
+        }}>
           {icon}
         </div>
       )}
-      <p className="text-sm font-medium text-[#0f172a]">{title}</p>
+      <p style={{ fontSize: '14px', fontWeight: 600, color: '#8b949e' }}>{title}</p>
       {description && (
-        <p className="mt-1 text-sm text-[#475569]">{description}</p>
+        <p style={{ marginTop: '4px', fontSize: '13px', color: '#484f58' }}>{description}</p>
       )}
-      {action && <div className="mt-4">{action}</div>}
+      {action && <div style={{ marginTop: '16px' }}>{action}</div>}
     </div>
   )
 }

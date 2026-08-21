@@ -1,4 +1,4 @@
-// ============================================================
+﻿// ============================================================
 // HYTICON — NuevaCotizacionPage — Formulario multi-step
 // Paso 1: Datos generales  (cliente, proyecto, fechas, moneda)
 // Paso 2: Ítems            (agregar productos/servicios)
@@ -210,20 +210,20 @@ export default function NuevaCotizacionPage() {
           <div key={i} className="flex items-center gap-2">
             <div className={`flex items-center gap-2 text-sm ${
               i < paso  ? 'text-[#16a34a]' :
-              i === paso ? 'text-[#2563eb] font-semibold' :
-              'text-[#94a3b8]'
+              i === paso ? 'text-[#58a6ff] font-semibold' :
+              'text-[#484f58]'
             }`}>
               <div className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold ${
                 i < paso  ? 'bg-[#dcfce7] text-[#16a34a]' :
                 i === paso ? 'bg-[#2563eb] text-white' :
-                'bg-[#f1f5f9] text-[#94a3b8]'
+                'bg-[rgba(255,255,255,.06)] text-[#484f58]'
               }`}>
                 {i < paso ? <CheckCircle2 className="h-4 w-4" /> : i + 1}
               </div>
               {nombre}
             </div>
             {i < PASOS.length - 1 && (
-              <ChevronRight className="h-4 w-4 text-[#cbd5e1]" />
+              <ChevronRight className="h-4 w-4 text-[#2d3748]" />
             )}
           </div>
         ))}
@@ -306,7 +306,7 @@ export default function NuevaCotizacionPage() {
         <div className="flex flex-col gap-4">
           {/* Formulario para agregar ítem */}
           <Card className="p-5">
-            <p className="text-sm font-semibold text-[#0f172a] mb-4">Agregar ítem</p>
+            <p className="text-sm font-semibold text-[#c9d1d9] mb-4">Agregar ítem</p>
             <form onSubmit={hsi(onAgregarItem)} className="flex flex-col gap-4">
               {/* Selector de catálogo */}
               <FormField id="catSelect" label="Seleccionar del catálogo (opcional)">
@@ -342,8 +342,8 @@ export default function NuevaCotizacionPage() {
                   <Input id="precioUnitario" type="number" step="0.01" min="0" {...ri('precioUnitario')} error={!!ei.precioUnitario} />
                 </FormField>
                 <div className="flex flex-col gap-1">
-                  <span className="text-xs font-medium text-[#475569]">Subtotal</span>
-                  <div className="flex h-9 items-center rounded-md border border-[#e2e8f0] bg-[#f8fafc] px-3 text-sm font-semibold text-[#0f172a]">
+                  <span className="text-xs font-medium text-[#8b949e]">Subtotal</span>
+                  <div className="flex h-9 items-center rounded-md border border-[rgba(255,255,255,.07)] bg-[#1c2333] px-3 text-sm font-semibold text-[#c9d1d9]">
                     {formatMonto(subtotalPreview, monedaActual)}
                   </div>
                 </div>
@@ -363,25 +363,25 @@ export default function NuevaCotizacionPage() {
             <Card className="overflow-hidden">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-[#e2e8f0] bg-[#f8fafc]">
-                    <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-[#475569]">Tipo</th>
-                    <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-[#475569]">Descripción</th>
-                    <th className="px-4 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-[#475569] w-20">Cant.</th>
-                    <th className="px-4 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-[#475569] w-28">P. Unit.</th>
-                    <th className="px-4 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-[#475569] w-28">Subtotal</th>
+                  <tr className="border-b border-[rgba(255,255,255,.07)] bg-[#1c2333]">
+                    <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-[#8b949e]">Tipo</th>
+                    <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-[#8b949e]">Descripción</th>
+                    <th className="px-4 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-[#8b949e] w-20">Cant.</th>
+                    <th className="px-4 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-[#8b949e] w-28">P. Unit.</th>
+                    <th className="px-4 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-[#8b949e] w-28">Subtotal</th>
                     <th className="w-10"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {items.map((item, idx) => (
-                    <tr key={idx} className="border-b border-[#e2e8f0] last:border-0 hover:bg-[#f8fafc]/60">
+                    <tr key={idx} className="border-b border-[rgba(255,255,255,.07)] last:border-0 hover:bg-[#1c2333]/60">
                       <td className="px-4 py-3">
                         <Badge variant="default">{TIPO_ITEM_LABEL[item.tipoItem]}</Badge>
                       </td>
-                      <td className="px-4 py-3 text-[#0f172a]">{item.descripcion}</td>
-                      <td className="px-4 py-3 text-right text-[#475569]">{item.cantidad}</td>
-                      <td className="px-4 py-3 text-right text-[#475569]">{formatMonto(item.precioUnitario, monedaActual)}</td>
-                      <td className="px-4 py-3 text-right font-semibold text-[#0f172a]">
+                      <td className="px-4 py-3 text-[#c9d1d9]">{item.descripcion}</td>
+                      <td className="px-4 py-3 text-right text-[#8b949e]">{item.cantidad}</td>
+                      <td className="px-4 py-3 text-right text-[#8b949e]">{formatMonto(item.precioUnitario, monedaActual)}</td>
+                      <td className="px-4 py-3 text-right font-semibold text-[#c9d1d9]">
                         {formatMonto(calcularSubtotalItem(item.cantidad, item.precioUnitario), monedaActual)}
                       </td>
                       <td className="px-2 py-3">
@@ -395,7 +395,7 @@ export default function NuevaCotizacionPage() {
               </table>
             </Card>
           ) : (
-            <div className="flex items-center justify-center rounded-lg border border-dashed border-[#e2e8f0] py-10 text-[#94a3b8]">
+            <div className="flex items-center justify-center rounded-lg border border-dashed border-[rgba(255,255,255,.07)] py-10 text-[#484f58]">
               <div className="flex flex-col items-center gap-2">
                 <Package className="h-8 w-8" />
                 <p className="text-sm">Agrega al menos un ítem a la cotización</p>
@@ -438,27 +438,27 @@ export default function NuevaCotizacionPage() {
 
           {/* Resumen de totales */}
           <Card className="p-5">
-            <p className="text-sm font-semibold text-[#0f172a] mb-4">Resumen</p>
+            <p className="text-sm font-semibold text-[#c9d1d9] mb-4">Resumen</p>
             <div className="flex flex-col gap-2 text-sm">
               {items.map((item, idx) => (
-                <div key={idx} className="flex justify-between text-[#475569]">
+                <div key={idx} className="flex justify-between text-[#8b949e]">
                   <span className="flex-1 truncate pr-4">{item.descripcion}</span>
-                  <span className="font-medium text-[#0f172a]">
+                  <span className="font-medium text-[#c9d1d9]">
                     {formatMonto(calcularSubtotalItem(item.cantidad, item.precioUnitario), monedaActual)}
                   </span>
                 </div>
               ))}
               <Separator className="my-2" />
-              <div className="flex justify-between text-[#475569]">
+              <div className="flex justify-between text-[#8b949e]">
                 <span>Valor de venta</span>
                 <span className="font-medium">{formatMonto(totales.valorVenta, monedaActual)}</span>
               </div>
-              <div className="flex justify-between text-[#475569]">
+              <div className="flex justify-between text-[#8b949e]">
                 <span>IGV (18%)</span>
                 <span className="font-medium">{formatMonto(totales.igv, monedaActual)}</span>
               </div>
               <Separator className="my-1" />
-              <div className="flex justify-between text-base font-bold text-[#0f172a]">
+              <div className="flex justify-between text-base font-bold text-[#c9d1d9]">
                 <span>Total</span>
                 <span>{formatMonto(totales.total, monedaActual)}</span>
               </div>

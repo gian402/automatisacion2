@@ -1,13 +1,7 @@
-// ============================================================
-// HYTICON — MainLayout
-// Estructura principal: sidebar fijo + header + contenido
-// ============================================================
-
 import { Outlet, useLocation } from 'react-router-dom'
 import { Sidebar } from './Sidebar'
 import { Header } from './Header'
 
-// Mapa de rutas a títulos de página
 const PAGE_TITLES: Record<string, string> = {
   '/':             'Dashboard',
   '/cotizaciones': 'Cotizaciones',
@@ -20,23 +14,21 @@ const PAGE_TITLES: Record<string, string> = {
 
 export function MainLayout() {
   const location = useLocation()
-  const currentPath = location.pathname
-  // Normaliza /clientes/nuevo → /clientes
-  const firstSegment = currentPath.split('/').filter(Boolean)[0]
+  const firstSegment = location.pathname.split('/').filter(Boolean)[0]
   const basePath = firstSegment ? `/${firstSegment}` : '/'
   const title = PAGE_TITLES[basePath] ?? 'Dashboard'
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#f8fafc]">
-      {/* Sidebar fijo */}
+    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: '#0d1117' }}>
       <Sidebar />
-
-      {/* Contenido principal */}
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div style={{ display: 'flex', flex: 1, flexDirection: 'column', overflow: 'hidden' }}>
         <Header title={title} />
-
-        {/* Área de contenido con scroll */}
-        <main className="flex-1 overflow-y-auto p-6">
+        <main style={{
+          flex: 1,
+          overflowY: 'auto',
+          padding: '28px 32px',
+          background: '#0d1117',
+        }}>
           <Outlet />
         </main>
       </div>

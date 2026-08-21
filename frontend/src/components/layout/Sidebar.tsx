@@ -1,18 +1,7 @@
-// ============================================================
-// HYTICON — Sidebar
-// Navegación lateral corporativa
-// ============================================================
-
 import { NavLink } from 'react-router-dom'
 import {
-  LayoutDashboard,
-  Users,
-  Package,
-  FileText,
-  BarChart2,
-  ClipboardList,
-  UserCog,
-  ChevronRight,
+  LayoutDashboard, Users, Package, FileText,
+  BarChart2, ClipboardList, UserCog,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { usePermissions } from '@/hooks/usePermissions'
@@ -22,7 +11,6 @@ interface NavItem {
   label: string
   path: string
   icon: React.ElementType
-  requiredPermission?: string
 }
 
 const NAV_ITEMS: NavItem[] = [
@@ -42,71 +30,111 @@ export function Sidebar() {
   const { isAdmin } = usePermissions()
 
   return (
-    <aside className="flex h-full w-60 flex-col bg-[#0f172a]">
-      {/* Logo Corporativo */}
-      <div className="flex h-16 items-center gap-3 border-b border-[#1e293b] px-5">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#2563eb] shadow-sm">
-          <span className="text-sm font-black tracking-wider text-white">H</span>
-        </div>
-        <div className="flex flex-col">
-          <span className="text-sm font-bold tracking-wider text-white leading-none">HYTICON</span>
-          <span className="text-[10px] text-[#64748b] leading-tight mt-1 font-medium">TI & Seguridad Electrónica</span>
+    <aside style={{
+      width: '220px',
+      flexShrink: 0,
+      height: '100vh',
+      background: '#0d1117',
+      borderRight: '1px solid rgba(255,255,255,.06)',
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
+      {/* Logo */}
+      <div style={{
+        height: '56px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        padding: '0 16px',
+        borderBottom: '1px solid rgba(255,255,255,.06)',
+        flexShrink: 0,
+      }}>
+        <div style={{
+          width: '28px', height: '28px',
+          borderRadius: '7px',
+          background: '#2563eb',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '12px', fontWeight: 800, color: '#fff',
+          boxShadow: '0 0 12px rgba(37,99,235,.4)',
+          flexShrink: 0,
+        }}>H</div>
+        <div>
+          <div style={{ fontSize: '13px', fontWeight: 700, color: '#f0f6fc', letterSpacing: '.04em' }}>
+            HYTICON
+          </div>
+          <div style={{ fontSize: '10px', color: '#484f58', marginTop: '1px' }}>
+            TI & Seguridad Electrónica
+          </div>
         </div>
       </div>
 
-      {/* Navegación principal */}
-      <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto py-3 px-2">
-        <p className="mb-1 px-2 text-[10px] font-semibold uppercase tracking-widest text-[#475569]">
-          Principal
-        </p>
-        {NAV_ITEMS.map((item) => (
-          <SidebarLink key={item.path} item={item} />
-        ))}
-
-        {/* Sección exclusiva de administrador */}
+      {/* Nav */}
+      <nav style={{ flex: 1, overflowY: 'auto', padding: '12px 8px' }}>
+        <NavSection label="Principal" items={NAV_ITEMS} />
         {isAdmin() && (
-          <>
-            <div className="my-2 border-t border-[#1e293b]" />
-            <p className="mb-1 px-2 text-[10px] font-semibold uppercase tracking-widest text-[#475569]">
-              Administración
-            </p>
-            {ADMIN_NAV_ITEMS.map((item) => (
-              <SidebarLink key={item.path} item={item} />
-            ))}
-          </>
+          <NavSection label="Administración" items={ADMIN_NAV_ITEMS} />
         )}
       </nav>
 
-      {/* Versión */}
-      <div className="border-t border-[#1e293b] px-5 py-3">
-        <p className="text-[10px] text-[#334155]">Sistema de Cotizaciones v1.0</p>
+      {/* Footer */}
+      <div style={{
+        padding: '12px 16px',
+        borderTop: '1px solid rgba(255,255,255,.06)',
+        fontSize: '11px',
+        color: '#2d3748',
+      }}>
+        Sistema de Cotizaciones v1.0
       </div>
     </aside>
   )
 }
 
-// ── Link individual del sidebar ───────────────────────────────
+function NavSection({ label, items }: { label: string; items: NavItem[] }) {
+  return (
+    <div style={{ marginBottom: '20px' }}>
+      <div style={{
+        fontSize: '10px',
+        fontWeight: 600,
+        letterSpacing: '.08em',
+        textTransform: 'uppercase',
+        color: '#484f58',
+        padding: '0 8px',
+        marginBottom: '4px',
+      }}>{label}</div>
+      {items.map(item => <SidebarLink key={item.path} item={item} />)}
+    </div>
+  )
+}
+
 function SidebarLink({ item }: { item: NavItem }) {
   const Icon = item.icon
-
   return (
     <NavLink
       to={item.path}
       end={item.path === '/'}
-      className={({ isActive }) =>
-        cn(
-          'group flex items-center gap-3 rounded-[6px] px-3 py-2 text-sm transition-colors',
-          isActive
-            ? 'bg-[#1e3a8a] text-white font-medium'
-            : 'text-[#94a3b8] hover:bg-[#1e293b] hover:text-white',
-        )
-      }
+      className={({ isActive }) => cn(
+        'group flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-all duration-100',
+        isActive
+          ? 'bg-[rgba(37,99,235,.15)] text-[#58a6ff] font-medium'
+          : 'text-[#8b949e] hover:bg-[rgba(255,255,255,.05)] hover:text-[#c9d1d9]',
+      )}
     >
       {({ isActive }) => (
         <>
-          <Icon className={cn('h-4 w-4 shrink-0', isActive ? 'text-white' : 'text-[#64748b] group-hover:text-white')} />
-          <span className="flex-1">{item.label}</span>
-          {isActive && <ChevronRight className="h-3 w-3 text-[#93c5fd]" />}
+          <Icon className={cn(
+            'h-[15px] w-[15px] shrink-0 transition-colors',
+            isActive ? 'text-[#58a6ff]' : 'text-[#484f58] group-hover:text-[#8b949e]'
+          )} />
+          <span style={{ fontSize: '13px' }}>{item.label}</span>
+          {isActive && (
+            <span style={{
+              marginLeft: 'auto',
+              width: '4px', height: '4px',
+              borderRadius: '50%',
+              background: '#2563eb',
+              boxShadow: '0 0 6px rgba(37,99,235,.8)',
+            }} />
+          )}
         </>
       )}
     </NavLink>

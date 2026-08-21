@@ -1,20 +1,13 @@
-// ============================================================
-// HYTICON — Modal / Dialog
-// Basado en Radix UI Dialog. Overlay + contenido animado.
-// ============================================================
-
 import { forwardRef, type ReactNode } from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-// ── Re-exportar primitivos Radix para uso directo ─────────────
 const Dialog = DialogPrimitive.Root
 const DialogTrigger = DialogPrimitive.Trigger
 const DialogClose = DialogPrimitive.Close
 const DialogPortal = DialogPrimitive.Portal
 
-// ── Overlay ───────────────────────────────────────────────────
 const DialogOverlay = forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
@@ -22,7 +15,7 @@ const DialogOverlay = forwardRef<
   <DialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      'fixed inset-0 z-50 bg-black/40 backdrop-blur-[2px]',
+      'fixed inset-0 z-50 bg-black/60 backdrop-blur-[3px]',
       'data-[state=open]:animate-in data-[state=closed]:animate-out',
       'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
       className,
@@ -32,11 +25,9 @@ const DialogOverlay = forwardRef<
 ))
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
-// ── Contenido del modal ───────────────────────────────────────
 interface DialogContentProps
   extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
   size?: 'sm' | 'md' | 'lg' | 'xl'
-  /** Ocultar el botón de cerrar en la esquina */
   hideClose?: boolean
 }
 
@@ -44,13 +35,7 @@ const DialogContent = forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   DialogContentProps
 >(({ className, size = 'md', hideClose = false, children, ...props }, ref) => {
-  const sizeClass = {
-    sm: 'max-w-sm',
-    md: 'max-w-lg',
-    lg: 'max-w-2xl',
-    xl: 'max-w-4xl',
-  }[size]
-
+  const sizeClass = { sm: 'max-w-sm', md: 'max-w-lg', lg: 'max-w-2xl', xl: 'max-w-4xl' }[size]
   return (
     <DialogPortal>
       <DialogOverlay />
@@ -58,33 +43,30 @@ const DialogContent = forwardRef<
         ref={ref}
         className={cn(
           'fixed left-1/2 top-1/2 z-50 w-full -translate-x-1/2 -translate-y-1/2',
-          'rounded-xl border border-[#e2e8f0] bg-white shadow-xl',
+          'rounded-xl border border-[rgba(255,255,255,.09)] bg-[#161b27] shadow-[0_24px_48px_rgba(0,0,0,.6)]',
           'data-[state=open]:animate-in data-[state=closed]:animate-out',
           'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
           'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
           'data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-1/2',
           'data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-1/2',
-          'focus:outline-none',
+          'focus:outline-none mx-4',
           sizeClass,
-          'mx-4',
           className,
         )}
         {...props}
       >
         {children}
-
-        {/* Botón cerrar */}
         {!hideClose && (
           <DialogClose
             className={cn(
-              'absolute right-4 top-4 rounded-[4px] p-1 text-[#94a3b8]',
-              'hover:bg-[#f1f5f9] hover:text-[#0f172a]',
+              'absolute right-4 top-4 rounded-md p-1.5 text-[#484f58]',
+              'hover:bg-[rgba(255,255,255,.07)] hover:text-[#c9d1d9]',
               'focus:outline-none focus:ring-2 focus:ring-[#2563eb]',
               'transition-colors',
             )}
             aria-label="Cerrar"
           >
-            <X className="h-4 w-4" />
+            <X className="h-3.5 w-3.5" />
           </DialogClose>
         )}
       </DialogPrimitive.Content>
@@ -93,63 +75,49 @@ const DialogContent = forwardRef<
 })
 DialogContent.displayName = DialogPrimitive.Content.displayName
 
-// ── Header del modal ──────────────────────────────────────────
 function DialogHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      className={cn('border-b border-[#e2e8f0] px-6 py-4', className)}
-      {...props}
-    />
+    <div className={cn('border-b border-[rgba(255,255,255,.06)] px-6 py-4', className)} {...props} />
   )
 }
 
-// ── Título ────────────────────────────────────────────────────
 const DialogTitle = forwardRef<
   React.ElementRef<typeof DialogPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
     ref={ref}
-    className={cn('text-base font-semibold text-[#0f172a] pr-6', className)}
+    className={cn('text-sm font-semibold text-[#f0f6fc] pr-6', className)}
     {...props}
   />
 ))
 DialogTitle.displayName = DialogPrimitive.Title.displayName
 
-// ── Descripción ───────────────────────────────────────────────
 const DialogDescription = forwardRef<
   React.ElementRef<typeof DialogPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Description
     ref={ref}
-    className={cn('mt-1 text-sm text-[#475569]', className)}
+    className={cn('mt-1 text-sm text-[#8b949e]', className)}
     {...props}
   />
 ))
 DialogDescription.displayName = DialogPrimitive.Description.displayName
 
-// ── Body del modal ────────────────────────────────────────────
 function DialogBody({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div className={cn('px-6 py-4', className)} {...props} />
-  )
+  return <div className={cn('px-6 py-4', className)} {...props} />
 }
 
-// ── Footer del modal ──────────────────────────────────────────
 function DialogFooter({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn(
-        'flex items-center justify-end gap-2 border-t border-[#e2e8f0] px-6 py-4',
-        className,
-      )}
+      className={cn('flex items-center justify-end gap-2 border-t border-[rgba(255,255,255,.06)] px-6 py-4', className)}
       {...props}
     />
   )
 }
 
-// ── Modal de confirmación prebuilt ────────────────────────────
 interface ConfirmDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -164,16 +132,9 @@ interface ConfirmDialogProps {
 }
 
 export function ConfirmDialog({
-  open,
-  onOpenChange,
-  title,
-  description,
-  confirmLabel = 'Confirmar',
-  cancelLabel = 'Cancelar',
-  variant = 'primary',
-  isLoading = false,
-  onConfirm,
-  children,
+  open, onOpenChange, title, description,
+  confirmLabel = 'Confirmar', cancelLabel = 'Cancelar',
+  variant = 'primary', isLoading = false, onConfirm, children,
 }: ConfirmDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -182,13 +143,11 @@ export function ConfirmDialog({
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
-
         {children && <DialogBody>{children}</DialogBody>}
-
         <DialogFooter>
           <DialogClose asChild>
             <button
-              className="inline-flex h-9 items-center justify-center rounded-[6px] border border-[#e2e8f0] bg-white px-4 text-sm font-medium text-[#0f172a] hover:bg-[#f8fafc] transition-colors"
+              className="inline-flex h-8 items-center justify-center rounded-md border border-[rgba(255,255,255,.08)] bg-transparent px-4 text-sm font-medium text-[#8b949e] hover:bg-[rgba(255,255,255,.05)] hover:text-[#c9d1d9] transition-colors"
               disabled={isLoading}
             >
               {cancelLabel}
@@ -198,15 +157,15 @@ export function ConfirmDialog({
             onClick={onConfirm}
             disabled={isLoading}
             className={cn(
-              'inline-flex h-9 items-center justify-center gap-2 rounded-[6px] px-4 text-sm font-medium text-white transition-colors',
+              'inline-flex h-8 items-center justify-center gap-2 rounded-md px-4 text-sm font-medium text-white transition-colors',
               'disabled:opacity-50 disabled:pointer-events-none',
               variant === 'danger'
-                ? 'bg-[#dc2626] hover:bg-[#b91c1c]'
-                : 'bg-[#2563eb] hover:bg-[#1d4ed8]',
+                ? 'bg-[rgba(248,81,73,.15)] text-[#f85149] border border-[rgba(248,81,73,.25)] hover:bg-[rgba(248,81,73,.25)]'
+                : 'bg-[#2563eb] hover:bg-[#1d4ed8] shadow-[0_4px_16px_rgba(37,99,235,.3)]',
             )}
           >
             {isLoading && (
-              <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
             )}
             {confirmLabel}
           </button>
@@ -217,15 +176,6 @@ export function ConfirmDialog({
 }
 
 export {
-  Dialog,
-  DialogTrigger,
-  DialogClose,
-  DialogPortal,
-  DialogOverlay,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogBody,
-  DialogFooter,
+  Dialog, DialogTrigger, DialogClose, DialogPortal, DialogOverlay,
+  DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogBody, DialogFooter,
 }

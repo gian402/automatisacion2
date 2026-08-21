@@ -1,4 +1,4 @@
-// ============================================================
+﻿// ============================================================
 // HYTICON — ClientesPage (Prompt 10)
 // Accesible por ADMINISTRADOR y SUPERVISOR
 // ============================================================
@@ -175,8 +175,8 @@ export default function ClientesPage() {
       header: 'Razón social / Nombre',
       render: (c) => (
         <div>
-          <p className="font-medium text-[#0f172a]">{c.nombre}</p>
-          {c.ruc && <p className="text-xs text-[#94a3b8]">RUC {c.ruc}</p>}
+          <p className="font-medium text-[#c9d1d9]">{c.nombre}</p>
+          {c.ruc && <p className="text-xs text-[#484f58]">RUC {c.ruc}</p>}
         </div>
       ),
     },
@@ -185,9 +185,9 @@ export default function ClientesPage() {
       header: 'Contacto',
       render: (c) => (
         <div className="flex flex-col gap-0.5">
-          {c.email && <span className="text-sm text-[#334155]">{c.email}</span>}
-          {c.telefono && <span className="text-xs text-[#94a3b8]">{c.telefono}</span>}
-          {!c.email && !c.telefono && <span className="text-xs text-[#cbd5e1]">—</span>}
+          {c.email && <span className="text-sm text-[#8b949e]">{c.email}</span>}
+          {c.telefono && <span className="text-xs text-[#484f58]">{c.telefono}</span>}
+          {!c.email && !c.telefono && <span className="text-xs text-[#2d3748]">—</span>}
         </div>
       ),
     },
@@ -195,8 +195,8 @@ export default function ClientesPage() {
       key: 'direccion',
       header: 'Dirección',
       render: (c) => (
-        <span className="text-sm text-[#475569]">
-          {c.direccion ?? <span className="text-[#cbd5e1]">—</span>}
+        <span className="text-sm text-[#8b949e]">
+          {c.direccion ?? <span className="text-[#2d3748]">—</span>}
         </span>
       ),
     },
@@ -227,7 +227,7 @@ export default function ClientesPage() {
             title="Editar cliente"
             onClick={(e) => { e.stopPropagation(); abrirEditar(c) }}
           >
-            <Pencil className="h-4 w-4 text-[#64748b]" />
+            <Pencil className="h-4 w-4 text-[#484f58]" />
           </Button>
           {/* Toggle activo */}
           <Button
@@ -238,7 +238,7 @@ export default function ClientesPage() {
           >
             {c.activo
               ? <ToggleRight className="h-4 w-4 text-[#16a34a]" />
-              : <ToggleLeft  className="h-4 w-4 text-[#94a3b8]" />}
+              : <ToggleLeft  className="h-4 w-4 text-[#484f58]" />}
           </Button>
         </div>
       ),
@@ -264,7 +264,7 @@ export default function ClientesPage() {
       {/* ── Barra de búsqueda ────────────────────────────── */}
       <div className="flex items-center gap-3">
         <div className="relative flex-1 max-w-xs">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#94a3b8] pointer-events-none" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#484f58] pointer-events-none" />
           <Input
             placeholder="Buscar por nombre, RUC, correo..."
             value={searchInput}
@@ -274,7 +274,7 @@ export default function ClientesPage() {
           {searchInput && (
             <button
               type="button"
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94a3b8] hover:text-[#475569] transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#484f58] hover:text-[#8b949e] transition-colors"
               onClick={() => { setSearchInput(''); setSearch(''); setPage(1) }}
               aria-label="Limpiar búsqueda"
             >
@@ -285,7 +285,7 @@ export default function ClientesPage() {
 
         {/* Contador de resultados */}
         {!isLoading && data && (
-          <span className="text-sm text-[#64748b]">
+          <span className="text-sm text-[#484f58]">
             {data.total === 0
               ? 'Sin resultados'
               : `${data.total} cliente${data.total !== 1 ? 's' : ''}`}

@@ -1,4 +1,4 @@
-// ============================================================
+﻿// ============================================================
 // HYTICON — AuditoriaPage (Prompt 15)
 // Historial de auditoría — solo ADMIN
 // ============================================================
@@ -52,13 +52,13 @@ function DetalleRow({ registro }: { registro: RegistroAuditoria }) {
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1 text-xs text-[#64748b] hover:text-[#0f172a] transition-colors"
+        className="flex items-center gap-1 text-xs text-[#484f58] hover:text-[#c9d1d9] transition-colors"
       >
         {open ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
         {open ? 'Ocultar detalle' : 'Ver detalle'}
       </button>
       {open && (
-        <pre className="mt-2 rounded bg-[#f8fafc] border border-[#e2e8f0] p-2 text-xs text-[#475569] overflow-auto max-h-32 font-mono">
+        <pre className="mt-2 rounded bg-[#1c2333] border border-[rgba(255,255,255,.07)] p-2 text-xs text-[#8b949e] overflow-auto max-h-32 font-mono">
           {JSON.stringify(registro.detalle, null, 2)}
         </pre>
       )}
@@ -110,10 +110,10 @@ export default function AuditoriaPage() {
         const d = new Date(r.createdAt)
         return (
           <div className="leading-tight">
-            <p className="text-xs font-medium text-[#0f172a]">
+            <p className="text-xs font-medium text-[#c9d1d9]">
               {d.toLocaleDateString('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric' })}
             </p>
-            <p className="text-xs text-[#94a3b8]">
+            <p className="text-xs text-[#484f58]">
               {d.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
             </p>
           </div>
@@ -127,11 +127,11 @@ export default function AuditoriaPage() {
       render: (r) =>
         r.usuario ? (
           <div className="leading-tight">
-            <p className="text-sm font-medium text-[#0f172a]">{r.usuario.nombre}</p>
-            <p className="text-xs text-[#94a3b8]">{r.usuario.email}</p>
+            <p className="text-sm font-medium text-[#c9d1d9]">{r.usuario.nombre}</p>
+            <p className="text-xs text-[#484f58]">{r.usuario.email}</p>
           </div>
         ) : (
-          <span className="text-xs text-[#cbd5e1]">Sistema</span>
+          <span className="text-xs text-[#2d3748]">Sistema</span>
         ),
     },
     {
@@ -149,7 +149,7 @@ export default function AuditoriaPage() {
       header: 'Módulo',
       width: '120px',
       render: (r) => (
-        <span className="text-sm text-[#475569]">{labelEntidad(r.entidad)}</span>
+        <span className="text-sm text-[#8b949e]">{labelEntidad(r.entidad)}</span>
       ),
     },
     {
@@ -158,7 +158,7 @@ export default function AuditoriaPage() {
       render: (r) => (
         <div>
           {r.entidadId && (
-            <p className="text-xs font-mono text-[#64748b] truncate max-w-[180px]">
+            <p className="text-xs font-mono text-[#484f58] truncate max-w-[180px]">
               ID: {r.entidadId}
             </p>
           )}
@@ -171,7 +171,7 @@ export default function AuditoriaPage() {
       header: 'IP',
       width: '110px',
       render: (r) => (
-        <span className="text-xs font-mono text-[#94a3b8]">{r.ip ?? '—'}</span>
+        <span className="text-xs font-mono text-[#484f58]">{r.ip ?? '—'}</span>
       ),
     },
   ]
@@ -200,7 +200,7 @@ export default function AuditoriaPage() {
       <div className="flex flex-wrap items-center gap-3">
         {/* Búsqueda por acción */}
         <div className="relative flex-1 min-w-[180px] max-w-xs">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#94a3b8] pointer-events-none" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#484f58] pointer-events-none" />
           <Input
             placeholder="Buscar por acción..."
             value={searchInput}
@@ -210,7 +210,7 @@ export default function AuditoriaPage() {
           {searchInput && (
             <button
               type="button"
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94a3b8] hover:text-[#475569] transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#484f58] hover:text-[#8b949e] transition-colors"
               onClick={() => { setSearchInput(''); setSearch('') }}
               aria-label="Limpiar búsqueda"
             >
@@ -234,7 +234,7 @@ export default function AuditoriaPage() {
 
         {/* Fecha desde */}
         <div className="flex items-center gap-1">
-          <label className="text-xs text-[#64748b] whitespace-nowrap">Desde</label>
+          <label className="text-xs text-[#484f58] whitespace-nowrap">Desde</label>
           <Input
             type="date"
             value={fechaDesde}
@@ -245,7 +245,7 @@ export default function AuditoriaPage() {
 
         {/* Fecha hasta */}
         <div className="flex items-center gap-1">
-          <label className="text-xs text-[#64748b] whitespace-nowrap">Hasta</label>
+          <label className="text-xs text-[#484f58] whitespace-nowrap">Hasta</label>
           <Input
             type="date"
             value={fechaHasta}
@@ -259,7 +259,7 @@ export default function AuditoriaPage() {
           <button
             type="button"
             onClick={limpiarFiltros}
-            className="flex items-center gap-1 text-xs text-[#64748b] hover:text-[#0f172a] transition-colors px-2 py-1 rounded border border-[#e2e8f0] bg-white hover:bg-[#f8fafc]"
+            className="flex items-center gap-1 text-xs text-[#484f58] hover:text-[#c9d1d9] transition-colors px-2 py-1 rounded border border-[rgba(255,255,255,.07)] bg-[#161b27] hover:bg-[#1c2333]"
           >
             <X className="h-3 w-3" />
             Limpiar
@@ -268,7 +268,7 @@ export default function AuditoriaPage() {
 
         {/* Contador */}
         {!isLoading && data && (
-          <span className="text-sm text-[#64748b] ml-auto">
+          <span className="text-sm text-[#484f58] ml-auto">
             {data.total === 0
               ? 'Sin registros'
               : `${data.total.toLocaleString()} registro${data.total !== 1 ? 's' : ''}`}

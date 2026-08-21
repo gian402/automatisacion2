@@ -1,8 +1,3 @@
-// ============================================================
-// HYTICON — ErrorMessage
-// Mensaje de error para formularios y estados de error de API
-// ============================================================
-
 import { AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -14,14 +9,13 @@ interface ErrorMessageProps {
 export function ErrorMessage({ message, className }: ErrorMessageProps) {
   if (!message) return null
   return (
-    <p className={cn('flex items-center gap-1.5 text-xs text-[#dc2626]', className)}>
+    <p className={cn('flex items-center gap-1.5 text-xs text-[#f85149]', className)}>
       <AlertCircle className="h-3.5 w-3.5 shrink-0" />
       {message}
     </p>
   )
 }
 
-// ── Estado de error de página completa ────────────────────────
 interface PageErrorProps {
   title?: string
   message?: string
@@ -30,20 +24,28 @@ interface PageErrorProps {
 
 export function PageError({
   title = 'Error al cargar',
-  message = 'Ocurrió un problema al obtener la información. Intenta de nuevo.',
+  message = 'Ocurrió un problema al obtener la información.',
   onRetry,
 }: PageErrorProps) {
   return (
-    <div className="flex flex-col items-center justify-center py-16 text-center">
-      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#fee2e2]">
-        <AlertCircle className="h-6 w-6 text-[#dc2626]" />
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '56px 24px', textAlign: 'center' }}>
+      <div style={{
+        marginBottom: '16px',
+        width: '44px', height: '44px', borderRadius: '10px',
+        background: 'rgba(248,81,73,.1)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        color: '#f85149',
+      }}>
+        <AlertCircle style={{ width: '20px', height: '20px' }} />
       </div>
-      <p className="text-sm font-medium text-[#0f172a]">{title}</p>
-      <p className="mt-1 text-sm text-[#475569]">{message}</p>
+      <p style={{ fontSize: '14px', fontWeight: 600, color: '#8b949e' }}>{title}</p>
+      <p style={{ marginTop: '4px', fontSize: '13px', color: '#484f58' }}>{message}</p>
       {onRetry && (
         <button
           onClick={onRetry}
-          className="mt-4 text-sm font-medium text-[#2563eb] hover:underline"
+          style={{ marginTop: '16px', fontSize: '13px', fontWeight: 500, color: '#58a6ff', background: 'none', border: 'none', cursor: 'pointer' }}
+          onMouseEnter={e => ((e.currentTarget as HTMLElement).style.textDecoration = 'underline')}
+          onMouseLeave={e => ((e.currentTarget as HTMLElement).style.textDecoration = 'none')}
         >
           Reintentar
         </button>

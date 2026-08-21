@@ -1,12 +1,6 @@
-// ============================================================
-// HYTICON — Header
-// Barra superior con título de página, usuario y logout
-// ============================================================
-
-import { LogOut, ChevronDown, User } from 'lucide-react'
+import { LogOut, ChevronDown } from 'lucide-react'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { useAuth } from '@/hooks/useAuth'
-import { cn } from '@/lib/utils'
 
 interface HeaderProps {
   title?: string
@@ -15,38 +9,64 @@ interface HeaderProps {
 export function Header({ title }: HeaderProps) {
   const { user, logout } = useAuth()
 
-  const handleLogout = async () => {
-    await logout()
-  }
-
   return (
-    <header className="flex h-14 items-center justify-between border-b border-[#e2e8f0] bg-white px-6">
-      {/* Título de la sección */}
-      <div>
-        {title && (
-          <h1 className="text-sm font-semibold text-[#0f172a]">{title}</h1>
-        )}
-      </div>
+    <header style={{
+      height: '56px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: '0 32px',
+      background: '#0d1117',
+      borderBottom: '1px solid rgba(255,255,255,.06)',
+      flexShrink: 0,
+    }}>
+      {/* Título */}
+      <span style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        color: '#f0f6fc',
+        letterSpacing: '-.1px',
+      }}>
+        {title}
+      </span>
 
-      {/* Info del usuario */}
+      {/* Usuario */}
       {user && (
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
-            <button className="flex items-center gap-2 rounded-[6px] px-2 py-1.5 text-sm transition-colors hover:bg-[#f1f5f9] focus:outline-none">
+            <button style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              padding: '5px 10px 5px 5px',
+              borderRadius: '8px',
+              border: '1px solid rgba(255,255,255,.07)',
+              background: 'transparent',
+              cursor: 'pointer',
+              transition: 'background .15s',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,.05)')}
+            onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+            >
               {/* Avatar */}
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#dbeafe] text-[#1e40af]">
-                <span className="text-xs font-semibold">
-                  {user.nombre.charAt(0).toUpperCase()}
-                </span>
+              <div style={{
+                width: '28px', height: '28px',
+                borderRadius: '7px',
+                background: 'rgba(37,99,235,.2)',
+                border: '1px solid rgba(37,99,235,.3)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: '12px', fontWeight: 700, color: '#58a6ff',
+                flexShrink: 0,
+              }}>
+                {user.nombre.charAt(0).toUpperCase()}
               </div>
-              {/* Nombre */}
-              <div className="text-left hidden sm:block">
-                <p className="text-xs font-medium text-[#0f172a] leading-none">{user.nombre}</p>
-                <p className="text-[10px] text-[#94a3b8] leading-none mt-0.5">
+              <div style={{ textAlign: 'left', lineHeight: 1 }}>
+                <div style={{ fontSize: '12px', fontWeight: 600, color: '#c9d1d9' }}>
+                  {user.nombre.split(' ')[0]}
+                </div>
+                <div style={{ fontSize: '10px', color: '#484f58', marginTop: '2px' }}>
                   {user.rol === 'ADMIN' ? 'Administrador' : 'Supervisor'}
-                </p>
+                </div>
               </div>
-              <ChevronDown className="h-3.5 w-3.5 text-[#94a3b8]" />
+              <ChevronDown style={{ width: '12px', height: '12px', color: '#484f58', marginLeft: '2px' }} />
             </button>
           </DropdownMenu.Trigger>
 
@@ -54,33 +74,41 @@ export function Header({ title }: HeaderProps) {
             <DropdownMenu.Content
               align="end"
               sideOffset={6}
-              className={cn(
-                'z-50 min-w-[180px] overflow-hidden rounded-lg border border-[#e2e8f0] bg-white shadow-md',
-                'data-[state=open]:animate-in data-[state=closed]:animate-out',
-                'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
-                'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
-              )}
+              style={{
+                minWidth: '200px',
+                background: '#161b27',
+                border: '1px solid rgba(255,255,255,.08)',
+                borderRadius: '10px',
+                boxShadow: '0 8px 24px rgba(0,0,0,.5)',
+                padding: '4px',
+                zIndex: 50,
+              }}
             >
-              {/* Info del usuario en menú */}
-              <div className="border-b border-[#e2e8f0] px-3 py-2.5">
-                <p className="text-xs font-medium text-[#0f172a]">{user.nombre}</p>
-                <p className="text-xs text-[#94a3b8]">{user.email}</p>
+              {/* Info */}
+              <div style={{
+                padding: '10px 12px 8px',
+                borderBottom: '1px solid rgba(255,255,255,.06)',
+                marginBottom: '4px',
+              }}>
+                <div style={{ fontSize: '13px', fontWeight: 600, color: '#f0f6fc' }}>{user.nombre}</div>
+                <div style={{ fontSize: '11px', color: '#484f58', marginTop: '2px' }}>{user.email}</div>
               </div>
 
               <DropdownMenu.Item
-                className="flex cursor-pointer items-center gap-2 px-3 py-2 text-xs text-[#475569] hover:bg-[#f1f5f9] hover:text-[#0f172a] focus:outline-none"
+                onSelect={logout}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '8px',
+                  padding: '7px 12px',
+                  fontSize: '13px', color: '#f85149',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  outline: 'none',
+                  transition: 'background .1s',
+                }}
+                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.background = 'rgba(248,81,73,.1)')}
+                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background = 'transparent')}
               >
-                <User className="h-3.5 w-3.5" />
-                Mi perfil
-              </DropdownMenu.Item>
-
-              <div className="border-t border-[#e2e8f0]" />
-
-              <DropdownMenu.Item
-                className="flex cursor-pointer items-center gap-2 px-3 py-2 text-xs text-[#dc2626] hover:bg-[#fee2e2] focus:outline-none"
-                onSelect={handleLogout}
-              >
-                <LogOut className="h-3.5 w-3.5" />
+                <LogOut style={{ width: '13px', height: '13px' }} />
                 Cerrar sesión
               </DropdownMenu.Item>
             </DropdownMenu.Content>

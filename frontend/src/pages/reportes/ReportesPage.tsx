@@ -1,4 +1,4 @@
-// ============================================================
+﻿// ============================================================
 // HYTICON — ReportesPage (Prompt 17)
 // Solo ADMIN — análisis de cotizaciones con filtros y tablas
 // ============================================================
@@ -59,9 +59,9 @@ function StatCard({
           <Icon className="h-4 w-4" />
         </div>
         <div className="min-w-0">
-          <p className="text-xs text-[#64748b]">{label}</p>
-          <p className="text-lg font-semibold text-[#0f172a] leading-tight">{value}</p>
-          {sublabel && <p className="text-xs text-[#94a3b8]">{sublabel}</p>}
+          <p className="text-xs text-[#484f58]">{label}</p>
+          <p className="text-lg font-semibold text-[#c9d1d9] leading-tight">{value}</p>
+          {sublabel && <p className="text-xs text-[#484f58]">{sublabel}</p>}
         </div>
       </CardContent>
     </Card>
@@ -75,7 +75,7 @@ const columns: TableColumn<CotizacionFila>[] = [
     header: 'Número',
     width: '160px',
     render: (c) => (
-      <span className="font-mono text-xs font-semibold text-[#2563eb]">
+      <span className="font-mono text-xs font-semibold text-[#58a6ff]">
         {c.numeroCotizacion}
       </span>
     ),
@@ -85,8 +85,8 @@ const columns: TableColumn<CotizacionFila>[] = [
     header: 'Cliente',
     render: (c) => (
       <div>
-        <p className="font-medium text-sm text-[#0f172a]">{c.cliente?.nombre ?? '—'}</p>
-        {c.cliente?.ruc && <p className="text-xs text-[#94a3b8]">RUC {c.cliente.ruc}</p>}
+        <p className="font-medium text-sm text-[#c9d1d9]">{c.cliente?.nombre ?? '—'}</p>
+        {c.cliente?.ruc && <p className="text-xs text-[#484f58]">RUC {c.cliente.ruc}</p>}
       </div>
     ),
   },
@@ -95,7 +95,7 @@ const columns: TableColumn<CotizacionFila>[] = [
     header: 'Responsable',
     width: '150px',
     render: (c) => (
-      <span className="text-sm text-[#475569]">{c.responsable?.nombre ?? '—'}</span>
+      <span className="text-sm text-[#8b949e]">{c.responsable?.nombre ?? '—'}</span>
     ),
   },
   {
@@ -103,7 +103,7 @@ const columns: TableColumn<CotizacionFila>[] = [
     header: 'Fecha',
     width: '100px',
     render: (c) => (
-      <span className="text-sm text-[#475569]">{fmtFecha(c.fechaEmision)}</span>
+      <span className="text-sm text-[#8b949e]">{fmtFecha(c.fechaEmision)}</span>
     ),
   },
   {
@@ -112,7 +112,7 @@ const columns: TableColumn<CotizacionFila>[] = [
     width: '120px',
     align: 'right',
     render: (c) => (
-      <span className="text-sm font-semibold text-[#0f172a]">{fmt(c.total)}</span>
+      <span className="text-sm font-semibold text-[#c9d1d9]">{fmt(c.total)}</span>
     ),
   },
   {
@@ -174,9 +174,9 @@ export default function ReportesPage() {
       />
 
       {/* ── Filtros ──────────────────────────────────────── */}
-      <div className="flex flex-wrap items-end gap-3 rounded-lg border border-[#e2e8f0] bg-[#f8fafc] p-4">
+      <div className="flex flex-wrap items-end gap-3 rounded-lg border border-[rgba(255,255,255,.07)] bg-[#1c2333] p-4">
         <div className="flex items-center gap-1">
-          <label className="text-xs text-[#64748b] whitespace-nowrap">Desde</label>
+          <label className="text-xs text-[#484f58] whitespace-nowrap">Desde</label>
           <Input
             type="date"
             value={filtros.fechaDesde ?? ''}
@@ -186,7 +186,7 @@ export default function ReportesPage() {
         </div>
 
         <div className="flex items-center gap-1">
-          <label className="text-xs text-[#64748b] whitespace-nowrap">Hasta</label>
+          <label className="text-xs text-[#484f58] whitespace-nowrap">Hasta</label>
           <Input
             type="date"
             value={filtros.fechaHasta ?? ''}
@@ -243,7 +243,7 @@ export default function ReportesPage() {
             <button
               type="button"
               onClick={limpiarFiltros}
-              className="flex items-center gap-1 px-3 py-2 rounded-md border border-[#e2e8f0] bg-white text-sm text-[#64748b] hover:bg-[#f1f5f9] transition-colors"
+              className="flex items-center gap-1 px-3 py-2 rounded-md border border-[rgba(255,255,255,.07)] bg-[#161b27] text-sm text-[#484f58] hover:bg-[rgba(255,255,255,.06)] transition-colors"
             >
               <X className="h-3.5 w-3.5" />
               Limpiar
@@ -296,11 +296,11 @@ export default function ReportesPage() {
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
             <Card>
               <div className="border-b border-[#f1f5f9] px-4 py-3">
-                <h3 className="text-sm font-semibold text-[#0f172a]">Distribución por estado</h3>
+                <h3 className="text-sm font-semibold text-[#c9d1d9]">Distribución por estado</h3>
               </div>
               <CardContent className="p-0">
                 {data.porEstado.length === 0 ? (
-                  <p className="py-6 text-center text-sm text-[#94a3b8]">Sin datos</p>
+                  <p className="py-6 text-center text-sm text-[#484f58]">Sin datos</p>
                 ) : (
                   <div className="divide-y divide-[#f1f5f9]">
                     {data.porEstado.map((e) => (
@@ -310,10 +310,10 @@ export default function ReportesPage() {
                             {ESTADO_LABEL[e.estado as EstadoCotizacion] ?? e.estado}
                           </Badge>
                         </div>
-                        <span className="text-sm font-semibold text-[#0f172a] w-8 shrink-0">
+                        <span className="text-sm font-semibold text-[#c9d1d9] w-8 shrink-0">
                           {e.cantidad}
                         </span>
-                        <div className="flex-1 bg-[#f1f5f9] rounded-full h-1.5">
+                        <div className="flex-1 bg-[rgba(255,255,255,.06)] rounded-full h-1.5">
                           <div
                             className="h-1.5 rounded-full bg-[#1e3a5f]"
                             style={{
@@ -323,7 +323,7 @@ export default function ReportesPage() {
                             }}
                           />
                         </div>
-                        <span className="text-sm text-[#475569] w-28 text-right shrink-0">
+                        <span className="text-sm text-[#8b949e] w-28 text-right shrink-0">
                           {fmt(e.monto)}
                         </span>
                       </div>
@@ -336,24 +336,24 @@ export default function ReportesPage() {
             {/* ── Top responsables ──────────────────────── */}
             <Card>
               <div className="border-b border-[#f1f5f9] px-4 py-3">
-                <h3 className="text-sm font-semibold text-[#0f172a]">Top responsables</h3>
+                <h3 className="text-sm font-semibold text-[#c9d1d9]">Top responsables</h3>
               </div>
               <CardContent className="p-0">
                 {data.topResponsables.length === 0 ? (
-                  <p className="py-6 text-center text-sm text-[#94a3b8]">Sin datos</p>
+                  <p className="py-6 text-center text-sm text-[#484f58]">Sin datos</p>
                 ) : (
                   <div className="divide-y divide-[#f1f5f9]">
                     {data.topResponsables.map((r, i) => (
                       <div key={r.responsableId ?? i} className="flex items-center gap-3 px-4 py-3">
-                        <span className="text-xs font-bold text-[#94a3b8] w-4 shrink-0">
+                        <span className="text-xs font-bold text-[#484f58] w-4 shrink-0">
                           {i + 1}
                         </span>
                         <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#dbeafe]">
                           <Users className="h-3.5 w-3.5 text-[#1e40af]" />
                         </div>
-                        <span className="flex-1 text-sm font-medium text-[#0f172a] truncate">{r.nombre}</span>
-                        <span className="text-xs text-[#64748b] shrink-0">{r.cantidad} cot.</span>
-                        <span className="text-sm font-semibold text-[#0f172a] w-28 text-right shrink-0">
+                        <span className="flex-1 text-sm font-medium text-[#c9d1d9] truncate">{r.nombre}</span>
+                        <span className="text-xs text-[#484f58] shrink-0">{r.cantidad} cot.</span>
+                        <span className="text-sm font-semibold text-[#c9d1d9] w-28 text-right shrink-0">
                           {fmt(r.monto)}
                         </span>
                       </div>
@@ -368,30 +368,30 @@ export default function ReportesPage() {
           {data.evolucion.length > 0 && (
             <Card>
               <div className="border-b border-[#f1f5f9] px-4 py-3">
-                <h3 className="text-sm font-semibold text-[#0f172a]">Evolución mensual</h3>
+                <h3 className="text-sm font-semibold text-[#c9d1d9]">Evolución mensual</h3>
               </div>
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-[#f1f5f9] bg-[#f8fafc]">
-                        <th className="px-4 py-2 text-left text-xs font-semibold text-[#64748b] uppercase tracking-wide">Mes</th>
-                        <th className="px-4 py-2 text-center text-xs font-semibold text-[#64748b] uppercase tracking-wide">Cotizaciones</th>
-                        <th className="px-4 py-2 text-center text-xs font-semibold text-[#64748b] uppercase tracking-wide">Aprobadas</th>
-                        <th className="px-4 py-2 text-right text-xs font-semibold text-[#64748b] uppercase tracking-wide">Monto</th>
+                      <tr className="border-b border-[#f1f5f9] bg-[#1c2333]">
+                        <th className="px-4 py-2 text-left text-xs font-semibold text-[#484f58] uppercase tracking-wide">Mes</th>
+                        <th className="px-4 py-2 text-center text-xs font-semibold text-[#484f58] uppercase tracking-wide">Cotizaciones</th>
+                        <th className="px-4 py-2 text-center text-xs font-semibold text-[#484f58] uppercase tracking-wide">Aprobadas</th>
+                        <th className="px-4 py-2 text-right text-xs font-semibold text-[#484f58] uppercase tracking-wide">Monto</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#f8fafc]">
                       {data.evolucion.map((e) => (
-                        <tr key={e.mes} className="hover:bg-[#f8fafc] transition-colors">
-                          <td className="px-4 py-2.5 font-medium text-[#0f172a]">{fmtMes(e.mes)}</td>
-                          <td className="px-4 py-2.5 text-center text-[#475569]">{e.cantidad}</td>
+                        <tr key={e.mes} className="hover:bg-[#1c2333] transition-colors">
+                          <td className="px-4 py-2.5 font-medium text-[#c9d1d9]">{fmtMes(e.mes)}</td>
+                          <td className="px-4 py-2.5 text-center text-[#8b949e]">{e.cantidad}</td>
                           <td className="px-4 py-2.5 text-center">
                             {e.aprobadas > 0
                               ? <span className="text-[#16a34a] font-medium">{e.aprobadas}</span>
-                              : <span className="text-[#cbd5e1]">—</span>}
+                              : <span className="text-[#2d3748]">—</span>}
                           </td>
-                          <td className="px-4 py-2.5 text-right font-mono text-sm text-[#0f172a]">
+                          <td className="px-4 py-2.5 text-right font-mono text-sm text-[#c9d1d9]">
                             {fmt(e.monto)}
                           </td>
                         </tr>
@@ -406,7 +406,7 @@ export default function ReportesPage() {
           {/* ── Tabla detalle ─────────────────────────────── */}
           <Card>
             <div className="flex items-center justify-between border-b border-[#f1f5f9] px-4 py-3">
-              <h3 className="text-sm font-semibold text-[#0f172a]">
+              <h3 className="text-sm font-semibold text-[#c9d1d9]">
                 Detalle — {data.cotizaciones.length} cotizaciones
               </h3>
             </div>
@@ -429,7 +429,7 @@ export default function ReportesPage() {
       {isLoading && (
         <div className="flex flex-col gap-4 animate-pulse">
           {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="h-24 rounded-lg bg-[#f1f5f9]" />
+            <div key={i} className="h-24 rounded-lg bg-[rgba(255,255,255,.06)]" />
           ))}
         </div>
       )}

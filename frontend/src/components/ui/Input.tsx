@@ -1,7 +1,3 @@
-// ============================================================
-// HYTICON — Input
-// ============================================================
-
 import { forwardRef } from 'react'
 import { cn } from '@/lib/utils'
 
@@ -15,12 +11,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       <input
         type={type}
         className={cn(
-          'flex h-9 w-full rounded-[6px] border border-[#e2e8f0] bg-white px-3 py-1 text-sm',
-          'placeholder:text-[#94a3b8] text-[#0f172a]',
-          'focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:ring-offset-0 focus:border-[#2563eb]',
-          'disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-[#f8fafc]',
-          'transition-colors',
-          error && 'border-[#dc2626] focus:ring-[#dc2626]',
+          'flex h-8 w-full rounded-md border bg-[rgba(255,255,255,.04)] px-3 text-sm text-[#c9d1d9]',
+          'border-[rgba(255,255,255,.08)] placeholder:text-[#484f58]',
+          'focus:outline-none focus:border-[#2563eb] focus:bg-[rgba(37,99,235,.05)] focus:ring-2 focus:ring-[rgba(37,99,235,.15)]',
+          'disabled:cursor-not-allowed disabled:opacity-40',
+          'transition-all duration-150',
+          error && 'border-[rgba(248,81,73,.4)] focus:border-[#f85149] focus:ring-[rgba(248,81,73,.15)]',
           className,
         )}
         ref={ref}
@@ -31,5 +27,4 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 )
 
 Input.displayName = 'Input'
-
 export { Input }

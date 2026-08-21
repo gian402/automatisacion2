@@ -1,220 +1,381 @@
-// ============================================================
-// HYTICON — LoginPage
-// Diseño final: limpio, corporativo, sin excesos visuales
-// ============================================================
-
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Eye, EyeOff, Lock, Mail, ShieldCheck } from 'lucide-react'
+import { Eye, EyeOff, ArrowRight } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
-import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/Input'
-import { FormField } from '@/components/ui/FormField'
 import { ROUTES } from '@/router/routes'
 
-// ── Schema ────────────────────────────────────────────────────
-const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, 'El correo es requerido')
-    .email('Ingresa un correo válido'),
-  password: z
-    .string()
-    .min(1, 'La contraseña es requerida')
-    .min(6, 'Mínimo 6 caracteres'),
+const schema = z.object({
+  email:    z.string().min(1, 'Requerido').email('Correo inválido'),
+  password: z.string().min(1, 'Requerido').min(6, 'Mínimo 6 caracteres'),
 })
-
-type LoginFormValues = z.infer<typeof loginSchema>
+type Form = z.infer<typeof schema>
 
 export default function LoginPage() {
-  const { login } = useAuth()
-  const navigate = useNavigate()
-  const location = useLocation()
-  const [showPassword, setShowPassword] = useState(false)
+  const { login }  = useAuth()
+  const navigate   = useNavigate()
+  const location   = useLocation()
+  const [showPass, setShowPass] = useState(false)
   const [apiError, setApiError] = useState<string | null>(null)
+  const from = (location.state as { from?: { pathname: string } })?.from?.pathname ?? ROUTES.DASHBOARD
 
-  const from =
-    (location.state as { from?: { pathname: string } })?.from?.pathname ??
-    ROUTES.DASHBOARD
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<Form>({
+    resolver: zodResolver(schema),
   })
 
-  const onSubmit = async (values: LoginFormValues) => {
+  const onSubmit = async (data: Form) => {
     setApiError(null)
     try {
-      await login(values)
+      await login(data)
       navigate(from, { replace: true })
     } catch {
-      setApiError('Credenciales incorrectas. Verifica tu correo y contraseña.')
+      setApiError('Correo o contraseña incorrectos.')
     }
   }
 
   return (
-    <div className="flex min-h-screen bg-[#f8fafc]">
-      {/* Panel izquierdo — decorativo (oculto en mobile) */}
-      <div className="hidden lg:flex lg:w-2/5 xl:w-1/2 flex-col justify-between bg-[#0f172a] p-12">
-        {/* Logo */}
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#2563eb]">
-            <span className="text-base font-bold text-white">H</span>
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        @keyframes lp-spin  { to { transform: rotate(360deg); } }
+        @keyframes lp-in    { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes lp-fade  { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes lp-glow  { 0%,100% { opacity: .5; } 50% { opacity: 1; } }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        .lp {
+          display: flex;
+          height: 100vh;
+          overflow: hidden;
+          font-family: 'Inter', system-ui, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          background: #080c14;
+        }
+
+        /* ─── Panel izquierdo ─── */
+        .lp-left {
+          flex: 1;
+          position: relative;
+          overflow: hidden;
+          animation: lp-fade .8s ease both;
+        }
+        .lp-left img {
+          width: 100%; height: 100%;
+          object-fit: cover;
+          object-position: center;
+          display: block;
+          transform: scale(1.03);
+          transition: transform 8s ease;
+        }
+        .lp-left:hover img { transform: scale(1); }
+        .lp-left::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(to right, transparent 55%, #080c14 100%);
+          pointer-events: none;
+        }
+
+        /* Logo sobre imagen */
+        .lp-logo {
+          position: absolute;
+          top: 28px; left: 28px;
+          z-index: 3;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          animation: lp-in .6s .1s ease both;
+        }
+        .lp-logo-icon {
+          width: 34px; height: 34px;
+          border-radius: 8px;
+          background: #2563eb;
+          display: flex; align-items: center; justify-content: center;
+          font-size: 14px; font-weight: 800; color: #fff;
+          box-shadow: 0 0 16px rgba(37,99,235,.5);
+        }
+        .lp-logo-name {
+          font-size: 12px; font-weight: 700;
+          color: rgba(255,255,255,.9);
+          letter-spacing: .16em;
+          text-transform: uppercase;
+          text-shadow: 0 1px 6px rgba(0,0,0,.6);
+        }
+
+        /* ─── Panel derecho ─── */
+        .lp-right {
+          width: 400px;
+          flex-shrink: 0;
+          position: relative;
+          background: #080c14;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          padding: 0 48px;
+          height: 100vh;
+          z-index: 2;
+        }
+        .lp-right::before {
+          content: '';
+          position: absolute;
+          top: -80px; left: 50%;
+          transform: translateX(-50%);
+          width: 260px; height: 260px;
+          background: radial-gradient(circle, rgba(37,99,235,.18) 0%, transparent 70%);
+          pointer-events: none;
+          animation: lp-glow 4s ease-in-out infinite;
+        }
+        .lp-right::after {
+          content: '';
+          position: absolute;
+          left: 0; top: 15%; bottom: 15%;
+          width: 1px;
+          background: linear-gradient(to bottom, transparent, rgba(37,99,235,.3) 40%, rgba(37,99,235,.3) 60%, transparent);
+        }
+
+        .lp-form-wrap {
+          position: relative;
+          z-index: 1;
+          animation: lp-in .65s .25s ease both;
+        }
+
+        .lp-eyebrow {
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: .12em;
+          text-transform: uppercase;
+          color: #2563eb;
+          margin-bottom: 10px;
+        }
+        .lp-title {
+          font-size: 30px;
+          font-weight: 800;
+          color: #f8fafc;
+          letter-spacing: -1px;
+          line-height: 1;
+          margin-bottom: 8px;
+        }
+        .lp-sub {
+          font-size: 13px;
+          color: #334155;
+          margin-bottom: 36px;
+          font-weight: 400;
+        }
+
+        .lp-field {
+          display: flex;
+          flex-direction: column;
+          gap: 7px;
+          margin-bottom: 18px;
+        }
+        .lp-label {
+          font-size: 11px;
+          font-weight: 600;
+          color: #475569;
+          text-transform: uppercase;
+          letter-spacing: .07em;
+        }
+        .lp-input-wrap { position: relative; }
+        .lp-input {
+          width: 100%;
+          height: 46px;
+          padding: 0 14px;
+          font-size: 14px;
+          color: #e2e8f0;
+          font-family: inherit;
+          background: rgba(255,255,255,.04);
+          border: 1px solid rgba(255,255,255,.07);
+          border-radius: 10px;
+          outline: none;
+          transition: border-color .2s, background .2s, box-shadow .2s;
+        }
+        .lp-input::placeholder { color: rgba(100,116,139,.5); }
+        .lp-input:hover { border-color: rgba(255,255,255,.12); }
+        .lp-input:focus {
+          border-color: rgba(37,99,235,.7);
+          background: rgba(37,99,235,.05);
+          box-shadow: 0 0 0 3px rgba(37,99,235,.12), inset 0 1px 0 rgba(255,255,255,.04);
+        }
+        .lp-input.err { border-color: rgba(239,68,68,.4); }
+        .lp-input.err:focus {
+          border-color: rgba(239,68,68,.7);
+          box-shadow: 0 0 0 3px rgba(239,68,68,.1);
+        }
+        .lp-input.pr { padding-right: 46px; }
+
+        .lp-eye {
+          position: absolute;
+          right: 13px; top: 50%;
+          transform: translateY(-50%);
+          background: none; border: none;
+          cursor: pointer;
+          color: rgba(100,116,139,.6);
+          display: flex; align-items: center;
+          padding: 3px;
+          transition: color .15s;
+        }
+        .lp-eye:hover { color: #94a3b8; }
+
+        .lp-ferr {
+          font-size: 11px;
+          color: #f87171;
+          font-weight: 500;
+        }
+
+        .lp-alert {
+          display: flex; align-items: center; gap: 9px;
+          padding: 11px 14px;
+          background: rgba(239,68,68,.07);
+          border: 1px solid rgba(239,68,68,.18);
+          border-radius: 10px;
+          margin-bottom: 18px;
+        }
+        .lp-alert-dot {
+          width: 5px; height: 5px;
+          border-radius: 50%;
+          background: #ef4444;
+          flex-shrink: 0;
+          box-shadow: 0 0 6px rgba(239,68,68,.8);
+        }
+        .lp-alert p { font-size: 13px; color: #fca5a5; }
+
+        .lp-btn {
+          width: 100%;
+          height: 48px;
+          border-radius: 10px;
+          border: none;
+          font-family: inherit;
+          font-size: 14px;
+          font-weight: 600;
+          cursor: pointer;
+          display: flex; align-items: center; justify-content: center; gap: 8px;
+          margin-top: 6px;
+          color: #fff;
+          background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 60%, #3b82f6 100%);
+          box-shadow: 0 4px 20px rgba(37,99,235,.35), inset 0 1px 0 rgba(255,255,255,.1);
+          transition: all .2s ease;
+          position: relative;
+          overflow: hidden;
+        }
+        .lp-btn::before {
+          content: '';
+          position: absolute; inset: 0;
+          background: linear-gradient(135deg, rgba(255,255,255,.08) 0%, transparent 60%);
+          pointer-events: none;
+        }
+        .lp-btn:hover:not(:disabled) {
+          transform: translateY(-1px);
+          box-shadow: 0 8px 28px rgba(37,99,235,.45), inset 0 1px 0 rgba(255,255,255,.12);
+        }
+        .lp-btn:active:not(:disabled) {
+          transform: scale(.99) translateY(0);
+          box-shadow: 0 4px 16px rgba(37,99,235,.3);
+        }
+        .lp-btn:disabled {
+          background: rgba(30,41,59,.8);
+          color: #334155;
+          box-shadow: none;
+          cursor: not-allowed;
+        }
+
+        .lp-spinner {
+          width: 16px; height: 16px;
+          border: 2px solid rgba(255,255,255,.2);
+          border-top-color: #fff;
+          border-radius: 50%;
+          animation: lp-spin .65s linear infinite;
+        }
+
+        .lp-footer {
+          margin-top: 28px;
+          font-size: 11px;
+          color: rgba(30,41,59,.9);
+          letter-spacing: .02em;
+        }
+
+        @media (max-width: 768px) {
+          .lp-left { display: none; }
+          .lp-right { width: 100%; padding: 0 28px; }
+        }
+      `}</style>
+
+      <div className="lp">
+
+        <div className="lp-left">
+          <img src="/login-fondo.jpg" alt="" />
+          <div className="lp-logo">
+            <div className="lp-logo-icon">H</div>
+            <span className="lp-logo-name">HYTICON</span>
           </div>
-          <span className="text-base font-semibold tracking-wide text-white">HYTICON</span>
         </div>
 
-        {/* Mensaje central */}
-        <div>
-          <ShieldCheck className="mb-6 h-12 w-12 text-[#2563eb]" />
-          <h2 className="text-2xl font-semibold text-white leading-snug">
-            Sistema de<br />Cotizaciones
-          </h2>
-          <p className="mt-3 text-sm text-[#64748b] leading-relaxed max-w-xs">
-            Gestiona, genera y da seguimiento a cotizaciones
-            de forma estructurada y profesional.
-          </p>
+        <div className="lp-right">
+          <div className="lp-form-wrap">
 
-          {/* Características */}
-          <ul className="mt-8 flex flex-col gap-3">
-            {[
-              'Generación de cotizaciones en PDF',
-              'Control de estados y seguimiento',
-              'Catálogo de productos y servicios',
-              'Historial de auditoría completo',
-            ].map((item) => (
-              <li key={item} className="flex items-center gap-2.5 text-sm text-[#94a3b8]">
-                <span className="flex h-1.5 w-1.5 shrink-0 rounded-full bg-[#2563eb]" />
-                {item}
-              </li>
-            ))}
-          </ul>
+            <p className="lp-eyebrow">Bienvenido</p>
+            <h1 className="lp-title">Iniciar sesión</h1>
+            <p className="lp-sub">Accede a tu cuenta corporativa</p>
+
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
+
+              <div className="lp-field">
+                <label htmlFor="email" className="lp-label">Correo electrónico</label>
+                <div className="lp-input-wrap">
+                  <input
+                    id="email" type="email"
+                    autoComplete="email" autoFocus
+                    placeholder="usuario@hyticon.com"
+                    className={`lp-input${errors.email ? ' err' : ''}`}
+                    {...register('email')}
+                  />
+                </div>
+                {errors.email && <span className="lp-ferr">{errors.email.message}</span>}
+              </div>
+
+              <div className="lp-field">
+                <label htmlFor="password" className="lp-label">Contraseña</label>
+                <div className="lp-input-wrap">
+                  <input
+                    id="password"
+                    type={showPass ? 'text' : 'password'}
+                    autoComplete="current-password"
+                    placeholder="••••••••"
+                    className={`lp-input pr${errors.password ? ' err' : ''}`}
+                    {...register('password')}
+                  />
+                  <button type="button" tabIndex={-1} className="lp-eye"
+                    onClick={() => setShowPass(v => !v)}
+                    aria-label={showPass ? 'Ocultar' : 'Mostrar'}>
+                    {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
+                  </button>
+                </div>
+                {errors.password && <span className="lp-ferr">{errors.password.message}</span>}
+              </div>
+
+              {apiError && (
+                <div className="lp-alert" role="alert">
+                  <span className="lp-alert-dot" />
+                  <p>{apiError}</p>
+                </div>
+              )}
+
+              <button type="submit" disabled={isSubmitting} className="lp-btn">
+                {isSubmitting
+                  ? <><span className="lp-spinner" />Verificando…</>
+                  : <>Entrar <ArrowRight size={15} /></>}
+              </button>
+
+            </form>
+
+            <p className="lp-footer">© {new Date().getFullYear()} HYTICON · Uso interno</p>
+          </div>
         </div>
 
-        {/* Footer del panel */}
-        <p className="text-xs text-[#334155]">
-          TI & Seguridad Electrónica — Uso interno
-        </p>
       </div>
-
-      {/* Panel derecho — formulario */}
-      <div className="flex flex-1 items-center justify-center p-6">
-        <div className="w-full max-w-[400px]">
-          {/* Logo mobile */}
-          <div className="mb-8 flex items-center gap-3 lg:hidden">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#2563eb]">
-              <span className="text-base font-bold text-white">H</span>
-            </div>
-            <span className="text-base font-semibold tracking-wide text-[#0f172a]">HYTICON</span>
-          </div>
-
-          {/* Título */}
-          <div className="mb-7">
-            <h1 className="text-xl font-semibold text-[#0f172a]">Iniciar sesión</h1>
-            <p className="mt-1 text-sm text-[#94a3b8]">
-              Ingresa tus credenciales para continuar
-            </p>
-          </div>
-
-          {/* Formulario */}
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-4"
-            noValidate
-          >
-            {/* Correo */}
-            <FormField
-              id="email"
-              label="Correo electrónico"
-              required
-              error={errors.email?.message}
-            >
-              <div className="relative">
-                <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#94a3b8]" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="usuario@hyticon.com"
-                  className="pl-9"
-                  error={!!errors.email}
-                  autoComplete="email"
-                  autoFocus
-                  {...register('email')}
-                />
-              </div>
-            </FormField>
-
-            {/* Contraseña */}
-            <FormField
-              id="password"
-              label="Contraseña"
-              required
-              error={errors.password?.message}
-            >
-              <div className="relative">
-                <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#94a3b8]" />
-                <Input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="••••••••"
-                  className="pl-9 pr-10"
-                  error={!!errors.password}
-                  autoComplete="current-password"
-                  {...register('password')}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((v) => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded p-0.5 text-[#94a3b8] hover:text-[#475569] focus:outline-none"
-                  tabIndex={-1}
-                  aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-                >
-                  {showPassword
-                    ? <EyeOff className="h-4 w-4" />
-                    : <Eye className="h-4 w-4" />
-                  }
-                </button>
-              </div>
-            </FormField>
-
-            {/* Error de API */}
-            {apiError && (
-              <div
-                className="flex items-start gap-2 rounded-[6px] border border-[#fecaca] bg-[#fff1f2] px-3 py-2.5"
-                role="alert"
-              >
-                <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#dc2626] text-[9px] font-bold text-white">!</span>
-                <p className="text-xs text-[#b91c1c]">{apiError}</p>
-              </div>
-            )}
-
-            {/* Divisor */}
-            <div className="h-px bg-[#f1f5f9]" />
-
-            {/* Submit */}
-            <Button
-              type="submit"
-              variant="primary"
-              size="lg"
-              loading={isSubmitting}
-              className="w-full"
-            >
-              {isSubmitting ? 'Verificando…' : 'Ingresar al sistema'}
-            </Button>
-          </form>
-
-          {/* Footer */}
-          <p className="mt-8 text-center text-xs text-[#cbd5e1]">
-            © {new Date().getFullYear()} HYTICON · Sistema de Cotizaciones
-          </p>
-        </div>
-      </div>
-    </div>
+    </>
   )
 }

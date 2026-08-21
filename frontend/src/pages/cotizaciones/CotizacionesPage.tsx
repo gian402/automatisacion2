@@ -1,4 +1,4 @@
-// ============================================================
+﻿// ============================================================
 // HYTICON — CotizacionesPage — Listado de cotizaciones
 // ============================================================
 
@@ -59,7 +59,7 @@ export default function CotizacionesPage() {
       header: 'Número',
       width: '160px',
       render: (c) => (
-        <span className="font-mono text-xs font-semibold text-[#2563eb]">
+        <span className="font-mono text-xs font-semibold text-[#58a6ff]">
           {c.numeroCotizacion}
         </span>
       ),
@@ -69,9 +69,9 @@ export default function CotizacionesPage() {
       header: 'Cliente / Proyecto',
       render: (c) => (
         <div>
-          <p className="font-medium text-[#0f172a]">{c.cliente?.nombre ?? '—'}</p>
+          <p className="font-medium text-[#c9d1d9]">{c.cliente?.nombre ?? '—'}</p>
           {c.proyecto && (
-            <p className="text-xs text-[#94a3b8] line-clamp-1">{c.proyecto}</p>
+            <p className="text-xs text-[#484f58] line-clamp-1">{c.proyecto}</p>
           )}
         </div>
       ),
@@ -81,7 +81,7 @@ export default function CotizacionesPage() {
       header: 'Responsable',
       width: '160px',
       render: (c) => (
-        <span className="text-sm text-[#475569]">{c.responsable?.nombre ?? '—'}</span>
+        <span className="text-sm text-[#8b949e]">{c.responsable?.nombre ?? '—'}</span>
       ),
     },
     {
@@ -89,7 +89,7 @@ export default function CotizacionesPage() {
       header: 'Emisión',
       width: '110px',
       render: (c) => (
-        <span className="text-sm text-[#475569]">
+        <span className="text-sm text-[#8b949e]">
           {new Date(c.fechaEmision).toLocaleDateString('es-PE')}
         </span>
       ),
@@ -100,7 +100,7 @@ export default function CotizacionesPage() {
       width: '140px',
       align: 'right',
       render: (c) => (
-        <span className="text-sm font-semibold text-[#0f172a]">
+        <span className="text-sm font-semibold text-[#c9d1d9]">
           {formatMonto(c.total, c.moneda)}
         </span>
       ),
@@ -136,7 +136,7 @@ export default function CotizacionesPage() {
       {/* Filtros */}
       <div className="flex flex-wrap items-center gap-3">
         <div className="relative flex-1 min-w-[200px] max-w-xs">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#94a3b8] pointer-events-none" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#484f58] pointer-events-none" />
           <Input
             placeholder="Buscar número, cliente, proyecto..."
             value={searchInput}
@@ -146,7 +146,7 @@ export default function CotizacionesPage() {
           {searchInput && (
             <button
               type="button"
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94a3b8] hover:text-[#475569] transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#484f58] hover:text-[#8b949e] transition-colors"
               onClick={() => { setSearchInput(''); setSearch(''); setPage(1) }}
             >
               <X className="h-3.5 w-3.5" />
@@ -167,7 +167,7 @@ export default function CotizacionesPage() {
         </div>
 
         {!isLoading && data && (
-          <span className="text-sm text-[#64748b]">
+          <span className="text-sm text-[#484f58]">
             {data.total === 0
               ? 'Sin resultados'
               : `${data.total} cotización${data.total !== 1 ? 'es' : ''}`}

@@ -1,15 +1,8 @@
-// ============================================================
-// HYTICON — Select
-// Select nativo estilizado. Para selects complejos con búsqueda
-// usar Combobox (se implementa cuando sea necesario).
-// ============================================================
-
 import { forwardRef } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-export interface SelectProps
-  extends React.SelectHTMLAttributes<HTMLSelectElement> {
+export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   error?: boolean
 }
 
@@ -19,12 +12,14 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
       <div className="relative w-full">
         <select
           className={cn(
-            'flex h-9 w-full appearance-none rounded-[6px] border border-[#e2e8f0] bg-white',
-            'pl-3 pr-8 text-sm text-[#0f172a]',
-            'focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:ring-offset-0 focus:border-[#2563eb]',
-            'disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-[#f8fafc]',
-            'transition-colors cursor-pointer',
-            error && 'border-[#dc2626] focus:ring-[#dc2626]',
+            'flex h-8 w-full appearance-none rounded-md border bg-[rgba(255,255,255,.04)]',
+            'pl-3 pr-8 text-sm text-[#c9d1d9]',
+            'border-[rgba(255,255,255,.08)]',
+            'focus:outline-none focus:border-[#2563eb] focus:ring-2 focus:ring-[rgba(37,99,235,.15)]',
+            'disabled:cursor-not-allowed disabled:opacity-40',
+            'transition-all duration-150 cursor-pointer',
+            '[color-scheme:dark]',
+            error && 'border-[rgba(248,81,73,.4)]',
             className,
           )}
           ref={ref}
@@ -33,7 +28,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
           {children}
         </select>
         <ChevronDown
-          className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#94a3b8]"
+          className="pointer-events-none absolute right-2.5 top-1/2 h-3 w-3 -translate-y-1/2 text-[#484f58]"
           aria-hidden
         />
       </div>
@@ -42,5 +37,4 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
 )
 
 Select.displayName = 'Select'
-
 export { Select }

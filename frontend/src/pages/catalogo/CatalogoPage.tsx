@@ -1,4 +1,4 @@
-// ============================================================
+﻿// ============================================================
 // HYTICON — CatalogoPage (Prompt 11)
 // Accesible por todos los roles. Crear/editar/toggle solo ADMIN.
 // ============================================================
@@ -212,7 +212,7 @@ export default function CatalogoPage() {
       header: 'Código',
       width: '130px',
       render: (i) => (
-        <span className="font-mono text-xs font-semibold text-[#475569] bg-[#f1f5f9] px-2 py-0.5 rounded">
+        <span className="font-mono text-xs font-semibold text-[#8b949e] bg-[rgba(255,255,255,.06)] px-2 py-0.5 rounded">
           {i.codigo}
         </span>
       ),
@@ -222,9 +222,9 @@ export default function CatalogoPage() {
       header: 'Nombre / Descripción',
       render: (i) => (
         <div>
-          <p className="font-medium text-[#0f172a]">{i.nombre}</p>
+          <p className="font-medium text-[#c9d1d9]">{i.nombre}</p>
           {i.descripcion && (
-            <p className="text-xs text-[#94a3b8] line-clamp-1">{i.descripcion}</p>
+            <p className="text-xs text-[#484f58] line-clamp-1">{i.descripcion}</p>
           )}
         </div>
       ),
@@ -245,7 +245,7 @@ export default function CatalogoPage() {
       width: '80px',
       align: 'center',
       render: (i) => (
-        <span className="text-sm text-[#64748b]">{i.unidad ?? '—'}</span>
+        <span className="text-sm text-[#484f58]">{i.unidad ?? '—'}</span>
       ),
     },
     {
@@ -254,10 +254,10 @@ export default function CatalogoPage() {
       width: '120px',
       align: 'right',
       render: (i) => (
-        <span className="text-sm font-medium text-[#0f172a]">
+        <span className="text-sm font-medium text-[#c9d1d9]">
           {i.precioReferencial
             ? `S/ ${parseFloat(i.precioReferencial).toFixed(2)}`
-            : <span className="text-[#cbd5e1]">—</span>}
+            : <span className="text-[#2d3748]">—</span>}
         </span>
       ),
     },
@@ -288,7 +288,7 @@ export default function CatalogoPage() {
                 title="Editar ítem"
                 onClick={(e) => { e.stopPropagation(); abrirEditar(i) }}
               >
-                <Pencil className="h-4 w-4 text-[#64748b]" />
+                <Pencil className="h-4 w-4 text-[#484f58]" />
               </Button>
               <Button
                 variant="ghost"
@@ -298,7 +298,7 @@ export default function CatalogoPage() {
               >
                 {i.activo
                   ? <ToggleRight className="h-4 w-4 text-[#16a34a]" />
-                  : <ToggleLeft  className="h-4 w-4 text-[#94a3b8]" />}
+                  : <ToggleLeft  className="h-4 w-4 text-[#484f58]" />}
               </Button>
             </div>
           ),
@@ -328,7 +328,7 @@ export default function CatalogoPage() {
       <div className="flex flex-wrap items-center gap-3">
         {/* Búsqueda */}
         <div className="relative flex-1 min-w-[200px] max-w-xs">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#94a3b8] pointer-events-none" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#484f58] pointer-events-none" />
           <Input
             placeholder="Buscar por código, nombre..."
             value={searchInput}
@@ -338,7 +338,7 @@ export default function CatalogoPage() {
           {searchInput && (
             <button
               type="button"
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94a3b8] hover:text-[#475569] transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#484f58] hover:text-[#8b949e] transition-colors"
               onClick={() => { setSearchInput(''); setSearch(''); setPage(1) }}
               aria-label="Limpiar búsqueda"
             >
@@ -362,7 +362,7 @@ export default function CatalogoPage() {
 
         {/* Contador */}
         {!isLoading && data && (
-          <span className="text-sm text-[#64748b]">
+          <span className="text-sm text-[#484f58]">
             {data.total === 0
               ? 'Sin resultados'
               : `${data.total} ítem${data.total !== 1 ? 's' : ''}`}

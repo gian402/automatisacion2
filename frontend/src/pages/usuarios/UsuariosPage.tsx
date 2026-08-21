@@ -1,4 +1,4 @@
-// ============================================================
+﻿// ============================================================
 // HYTICON — UsuariosPage (Prompt 09 — Roles)
 // Solo accesible por ADMINISTRADOR
 // ============================================================
@@ -81,8 +81,8 @@ export default function UsuariosPage() {
       header: 'Nombre',
       render: (u) => (
         <div>
-          <p className="font-medium text-[#0f172a]">{u.nombre}</p>
-          <p className="text-xs text-[#94a3b8]">{u.email}</p>
+          <p className="font-medium text-[#c9d1d9]">{u.nombre}</p>
+          <p className="text-xs text-[#484f58]">{u.email}</p>
         </div>
       ),
     },
